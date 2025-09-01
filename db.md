@@ -1,6 +1,7 @@
 SELECT  h.id AS hotel_id, h.name AS hotel_name, h.domain AS hotel_domain, t.id AS template_id, t.name AS template_name, t.description AS template_description, tp.id AS page_id, tp.name AS page_name, tp.slug AS page_slug, tp.order_index AS page_order, ts.id AS section_id, ts.section AS section_name, ts.order_index AS section_order, c.id AS content_id, c.title AS content_title, c.description AS content_description, c.order_index AS content_order, m.id AS media_id, m.url AS media_url, m.alt_text AS media_alt_text, m.media_type AS media_type, m.order_index AS media_order FROM hotels h JOIN templates t  ON h.template_id = t.id JOIN template_pages tp  ON t.id = tp.template_id JOIN template_sections ts  ON tp.id = ts.template_page_id LEFT JOIN contents c  ON ts.id = c.template_section_id  AND c.hotel_id = h.id LEFT JOIN media_content m  ON ts.id = m.template_section_id  AND m.hotel_id = h.id WHERE h.id = 1  ORDER BY tp.order_index, ts.order_index, c.order_index, m.order_index;
 
 ```
+CREATE DATBASE IF NOT EXISTS Template;
 CREATE TABLE hotels (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
