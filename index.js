@@ -21,6 +21,14 @@ app.get("/:hotelID", async (req, res) => {
   }
 });
 
+app.get("/:template_id/pages", async (req, res) => {
+  const { template_id } = req.params; 
+  const pages = await getPages(template_id);
+  res.status(200).send({
+    pages
+  })
+})
+
 app.get("/:template_page_id/sections", async (req, res) => {
   const { template_page_id } = req.params;
   const sections = await getSections(template_page_id);
@@ -30,7 +38,6 @@ app.get("/:template_page_id/sections", async (req, res) => {
 })
 
 app.get("/:template_section_id/contents", async(req, res) => {
-  console.log("Requested content");
   const { template_section_id } = req.params;
   const contents = await getContents(template_section_id); 
   res.status(200).send({
