@@ -1,7 +1,9 @@
 const express = require("express");
 const mysql = require("mysql2");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -28,6 +30,7 @@ app.get("/:template_page_id/sections", async (req, res) => {
 })
 
 app.get("/:template_section_id/contents", async(req, res) => {
+  console.log("Requested content");
   const { template_section_id } = req.params;
   const contents = await getContents(template_section_id); 
   res.status(200).send({
@@ -92,9 +95,9 @@ const getSections = async (templage_page_id) => {
   });
 };
 
-const getContents = async () => {
+const getContents = async (template_section_id) => {
   return new Promise((resolve, reject) => {
-    connection.query("SELECT * FROM contents", (err, result) => {
+    connection.query("SELECT * FROM contents where template_section_id = ?", template_section_id, (err, result) => {
       if(err){
         reject(err);
       }else{
