@@ -5,9 +5,9 @@
 
 `/api/hotels/:hotelId/pages`            GET      ALL pages
 `/api/hotels/:hotelId/pages/:pagename`  GET      Get all pages for hotel specific template
-    - query params
-        - `sections=home,room,dining`               (fetch only specific sections)
-        - `include=heading,description,images,footer` (fetch required content)
+- query params
+    - `sections=home,room,dining`               (fetch only specific sections)
+    - `include=heading,description,images,footer` (fetch required content)
 
 ## API for editing (Template Management UI)
 
@@ -579,4 +579,17 @@ Blog Page:
         - headings[2]
         - offer (title, icon, description)
 
+## Miscellaneous 
+1. hotel can change the theme (color) of the website
+1. hotel can change the contnet (headings, descriptions, images) 
+1. option to select and change template
+1. two hotel can use the same template
+1. hotel will be provided with the Admin panel to make the changes
+1. hotel can switch to different template
+1. all the templates should be in one project of individual project for each template.
+1. there should be a way to differenciate, which data(headings, descriptions, images) to show for same template choosen by hotel.
+1. deploy and map hotel domain with template
+1. nginx configuration to map domain with the template path(template path should be hidden only the pages path can be visible)
+    1. `<domain>/template11/home`   not allowed
+    1. `<domain>/home`              allowed
 
