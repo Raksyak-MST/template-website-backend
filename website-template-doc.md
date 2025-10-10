@@ -587,8 +587,10 @@ Blog Page:
 1. hotel will be provided with the Admin panel to make the changes
 1. hotel can switch to different template
 1. all the templates should be in one project of individual project for each template.
+1. make a default contents for all templates.
+    1. create common entry(headings, descriptions, images) for all the templates
 1. there should be a way to differenciate, which data(headings, descriptions, images) to show for same template choosen by hotel.
-1. deploy and map hotel domain with template
+1. deploy and map hotel domain with template.
 1. nginx configuration to map domain with the template path(template path should be hidden only the pages path can be visible)
     1. `<domain>/template11/home`   not allowed
     1. `<domain>/home`              allowed
