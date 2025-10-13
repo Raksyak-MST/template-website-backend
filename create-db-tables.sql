@@ -6,7 +6,7 @@ CREATE TABLE Templates (
   name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Template_pages (
+CREATE TABLE TemplatePages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   page_name VARCHAR(100) NOT NULL,
   template_id INT NOT NULL,
