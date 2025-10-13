@@ -1,0 +1,98 @@
+{
+  "info": {
+    "name": "Hotel CMS API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": { "method": "GET", "url": "http://localhost:3000/health" }
+    },
+    {
+      "name": "Get All Hotels",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/hotels" }
+    },
+    {
+      "name": "Get Hotel by ID",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/hotels/1" }
+    },
+    {
+      "name": "Create Hotel",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/hotels",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"name\":\"Hotel Sunshine\",\"template_id\":1}" }
+      }
+    },
+    {
+      "name": "Update Hotel",
+      "request": {
+        "method": "PUT",
+        "url": "http://localhost:3000/api/hotels/1",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"name\":\"Hotel Sunshine Updated\"}" }
+      }
+    },
+    {
+      "name": "Delete Hotel",
+      "request": { "method": "DELETE", "url": "http://localhost:3000/api/hotels/1" }
+    },
+    {
+      "name": "Get All Templates",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/templates" }
+    },
+    {
+      "name": "Get Template by ID",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/templates/1" }
+    },
+    {
+      "name": "Assign Template to Hotel",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/hotels/1/templates",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"template_id\":2}" }
+      }
+    },
+    {
+      "name": "Get Hotel Templates",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/hotels/1/templates" }
+    },
+    {
+      "name": "Remove Template from Hotel",
+      "request": { "method": "DELETE", "url": "http://localhost:3000/api/hotels/1/templates/2" }
+    },
+    {
+      "name": "Get Hotel Pages",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/hotels/1/pages" }
+    },
+    {
+      "name": "Get Hotel Page Details",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:3000/api/hotels/1/pages/home?sections=hero,rooms&include=headings,descriptions,images,footer"
+      }
+    },
+    {
+      "name": "Get Sections",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/hotels/1/sections" }
+    },
+    {
+      "name": "Get Headings",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/headings" }
+    },
+    {
+      "name": "Get Descriptions",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/descriptions" }
+    },
+    {
+      "name": "Get Images",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/images" }
+    },
+    {
+      "name": "Get Footer",
+      "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/footer" }
+    }
+  ]
+}
