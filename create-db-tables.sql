@@ -56,6 +56,16 @@ CREATE TABLE HotelSections (
   FOREIGN KEY (template_section_id) REFERENCES TemplateSections(id) ON DELETE CASCADE
 );
 
+CREATE TABLE HotelPageSections (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  hotel_id INT NOT NULL,
+  template_page_id INT NOT NULL,
+  hotel_section_id INT DEFAULT NULL,
+  FOREIGN KEY (hotel_id) REFERENCES Hotels (id) ON DELETE CASCADE,
+  FOREIGN KEY (template_page_id) REFERENCES TemplatePages (id) ON DELETE CASCADE,
+  FOREIGN KEY (hotel_section_id) REFERENCES HotelSections (id) ON DELETE CASCADE
+);
+
 CREATE TABLE HotelSectionHeadings (
   id INT AUTO_INCREMENT PRIMARY KEY,
   hotel_id INT NOT NULL,
