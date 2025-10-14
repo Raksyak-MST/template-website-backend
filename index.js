@@ -335,19 +335,21 @@ const getPages = (hotelId) =>
 const getSections = (hotelId) =>
   query(
     `SELECT 
-    ts.section_name,
-    hs.hotel_template_id,
-    h.id AS hotel_id
-FROM 
-    HotelSections AS hs
-JOIN 
-    TemplateSections AS ts 
-    ON ts.id = hs.template_section_id
-JOIN 
-    Hotels AS h 
-    ON h.current_template_id = hs.hotel_template_id
-WHERE 
-    h.id = ?`,
+  ts.section_name,
+  h.id AS hotel_id,
+  hs.id AS hotel_section_id,
+  tp.page_name
+FROM HotelSections AS hs
+JOIN HotelPages AS hp
+  ON hp.id = hs.hotel_page_id
+JOIN TemplatePages AS tp
+  ON tp.id = hp.template_page_id
+JOIN TemplateSections AS ts
+  ON ts.id = hs.template_section_id
+JOIN Hotels AS h
+  ON h.id = hp.hotel_id
+WHERE h.id = ?
+ORDER BY hs.id;`,
     [hotelId]
   );
 
