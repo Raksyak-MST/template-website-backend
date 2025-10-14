@@ -155,6 +155,8 @@
 - Activities section    (headings, descriptions, activity card)
 - Activity card         (images, title, description)
 - Gallery section       (headings, descriptions, images)
+- Our accommodations    (headings, accommodation)
+- Accommodation Card    (headings, Occupancy, image)
 
 # Website Components
 
@@ -579,6 +581,31 @@ Blog Page:
         - headings[2]
         - offer (title, icon, description)
 
+## Insert query sequence from left to right 
+`Templates → TemplatePages → TemplateSections → Hotels → HotelTemplates → HotelPages → HotelSections → HotelSectionHeadings / HotelSectionDescriptions / HotelSectionImages`
+
+## Created View tables
+HotelTemplateView – shows which hotel is using which template.
+HotelPagesView – shows all pages with the corresponding hotel name.
+HotelSectionHeadingsView – lists all headings with section name, page name, and hotel name.
+HotelSectionImagesView – lists all images with section name, page name, and hotel name.
+HotelSectionDescriptionsView – lists all descriptions with section name, page name, and hotel name
+
+## Left to Right Query
+```text
+Templates
+   → TemplatePages
+   → TemplateSections
+Hotels
+   → HotelTemplates → Templates
+   → HotelPages → TemplatePages
+   → HotelSections → HotelTemplates → HotelPages → TemplateSections
+        → HotelSectionHeadings
+        → HotelSectionDescriptions
+        → HotelSectionImages
+```
+
+
 ## Miscellaneous
 1. hotel can change the theme (color) of the website
 1. hotel can change the contnet (headings, descriptions, images) 
@@ -597,17 +624,3 @@ Blog Page:
 1. When requesting hotel data from a template show loading indicator if not able to get the data show error message.
 1. if hotel is deleted all the resource from the hotel should be deleted.
 
-## Insertion query order (respect foreign keys)
-
-1. Templates
-1. Template_pages
-1. TemplateSections
-1. Hotels
-1. HotelTemplates
-1. HotelSections
-1. HotelSectionHeadings
-1. HotelSectionDescriptions
-1. HotelSectionImages
-
-## Tracking
-`Template_pages → Templates → TemplateSections → HotelSections` (indirect relation through templates)
