@@ -181,6 +181,23 @@ app.get("/api/hotels/:hotelId/pages/:pagename", async (req, res) => {
   }
 });
 
+app.get("/api/hotels/:hotelId/pages/:pagename", async (req, res) => {
+  try {
+    const { hotelId, pagename } = req.params;
+    const { sections, include } = req.query; // optional filters
+    const template_id = 1; // Replace with actual template ID retrieval logic
+    console.log(pagename);
+    const query_str = `SELECT tp.page_name, hp.id AS hotel_page_id, hs.id AS hotel_section_id, ts.section_name, GROUP_CONCAT(DISTINCT hsh.heading_text ORDER BY hsh.id) AS headings, GROUP_CONCAT(DISTINCT hsd.description_text ORDER BY hsd.id) AS descriptions, GROUP_CONCAT(DISTINCT hsi.image_url ORDER BY hsi.id) AS images FROM Hotels h JOIN HotelPages hp ON hp.hotel_id = h.id JOIN TemplatePages tp ON tp.id = hp.template_page_id JOIN HotelSections hs ON hs.hotel_page_id = hp.id JOIN TemplateSections ts ON ts.id = hs.template_section_id LEFT JOIN HotelSectionHeadings hsh ON hsh.hotel_section_id = hs.id LEFT JOIN HotelSectionDescriptions hsd ON hsd.hotel_section_id = hs.id LEFT JOIN HotelSectionImages hsi ON hsi.hotel_section_id = hs.id WHERE h.id = ? AND tp.page_name = ? GROUP BY hs.id, tp.page_name, hp.id, ts.section_name ORDER BY hs.id;`;
+    console.log("Executing query:", query_str);
+    const data = await query(query_str, [hotelId, pagename]);
+    res.status(200).json(data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch page details", reason: error });
+  }
+});
+
 // -----------------------------------------------------------------------------
 // 4️⃣ SECTIONS, HEADINGS, DESCRIPTIONS, IMAGES, FOOTER APIs
 // -----------------------------------------------------------------------------
@@ -388,65 +405,81 @@ const removeTemplateFromHotel = (hotelId, templateId) =>
     templateId,
   ]);
 
-// ------------------------ GET HOTEL PAGE DETAILS ------------------------
-const getHotelPageDetails = async (hotelId, pageName, sections, include) => {
-  // Get the current template of the hotel
-  const hotel = await getHotel(hotelId);
-  if (!hotel || hotel.length === 0) return null;
-  const templateId = hotel[0].current_template_id;
+const getHotelPageDetails = async (hotelId, pageName) => {
+  try {
+    // ---------------- QUERY ----------------
+    const query_str = `
+SELECT 
+  tp.id AS template_id,
+  tp.page_name,
+  hs.id AS hotel_section_id,
+  ts.section_name,
+  ts.type AS section_type,
+  GROUP_CONCAT(DISTINCT hsh.heading_text ORDER BY hsh.id) AS headings,
+  GROUP_CONCAT(DISTINCT hsd.description_text ORDER BY hsd.id) AS descriptions,
+  GROUP_CONCAT(DISTINCT hsi.image_url ORDER BY hsi.id) AS images
+FROM Hotels h
+JOIN HotelPages hp ON hp.hotel_id = h.id
+JOIN TemplatePages tp ON tp.id = hp.template_page_id
+JOIN HotelSections hs ON hs.hotel_page_id = hp.id
+JOIN TemplateSections ts ON ts.id = hs.template_section_id
+LEFT JOIN HotelSectionHeadings hsh ON hsh.hotel_section_id = hs.id
+LEFT JOIN HotelSectionDescriptions hsd ON hsd.hotel_section_id = hs.id
+LEFT JOIN HotelSectionImages hsi ON hsi.hotel_section_id = hs.id
+WHERE h.id = ? AND tp.page_name = ?
+GROUP BY hs.id, ts.section_name, ts.type, tp.id, tp.page_name
+ORDER BY hs.id;
+`;
 
-  // Get the page from TemplatePages
-  const pageQuery = `
-    SELECT * FROM TemplatePages 
-    WHERE template_id = ? AND page_name = ?`;
-  const pages = await query(pageQuery, [templateId, pageName]);
-  if (!pages || pages.length === 0) return null;
-  const page = pages[0];
+    // ---------------- EXECUTE QUERY ----------------
+    const rows = await query(query_str, [hotelId, pageName]);
+    if (!rows || rows.length === 0) return { error: "Page not found" };
 
-  // Get all sections for this page
-  let sectionsQuery = `SELECT * FROM TemplateSections WHERE template_id = ? AND page_name = ?`;
-  let allSections = await query(sectionsQuery, [templateId, pageName]);
+    const templateId = rows[0].template_id;
 
-  // Filter sections if query param 'sections' is provided
-  if (sections) {
-    const sectionList = sections.split(",").map((s) => s.trim());
-    allSections = allSections.filter((sec) =>
-      sectionList.includes(sec.section_name)
-    );
-  }
+    // ---------------- PROCESS SECTIONS ----------------
+    const sections = rows.map((row) => {
+      const secObj = {
+        sectionName: row.section_name,
+        type: row.section_type,
+        headings: row.headings ? row.headings.split(",") : [],
+        descriptions: row.descriptions ? row.descriptions.split(",") : [],
+        images: row.images ? row.images.split(",") : [],
+      };
 
-  // For each section, fetch headings, descriptions, images, footer
-  const resultSections = [];
-  for (const sec of allSections) {
-    const secObj = {
-      sectionName: sec.section_name,
-      type: sec.type,
-    };
-
-    if (!include || include.includes("headings")) {
-      secObj.headings = (await getHeadings(sec.id)).map((h) => h.text);
-    }
-    if (!include || include.includes("descriptions")) {
-      secObj.descriptions = (await getDescriptions(sec.id)).map((d) => d.text);
-    }
-    if (!include || include.includes("images")) {
-      secObj.images = (await getImages(sec.id)).map((i) => i.url);
-    }
-    if (!include || include.includes("footer")) {
-      const footerData = await getFooter(sec.id);
-      if (footerData.length > 0) {
-        secObj.footer = footerData[0];
+      // Footer special handling
+      if (row.section_name.toLowerCase() === "footer") {
+        secObj.hotel = {
+          address: row.address || "",
+          phone: row.phone || "",
+          email: row.email || "",
+          timings: {
+            checkIn: row.check_in_time || "",
+            checkOut: row.check_out_time || "",
+            opening: row.opening_hours || "",
+            closing: row.closing_hours || "",
+          },
+        };
+        secObj.links = {
+          terms: row.terms_link || "",
+          privacy: row.privacy_link || "",
+          accessibility: row.accessibility_link || "",
+        };
       }
-    }
 
-    resultSections.push(secObj);
+      return secObj;
+    });
+
+    // ---------------- FINAL RESPONSE ----------------
+    return {
+      templateId: templateId.toString(),
+      pageName,
+      sections,
+    };
+  } catch (err) {
+    console.error("Failed to fetch page details:", err);
+    return { error: "Failed to fetch page details", reason: err.message };
   }
-
-  return {
-    templateId,
-    pageName,
-    sections: resultSections,
-  };
 };
 
 // ------------------------ START SERVER ------------------------
