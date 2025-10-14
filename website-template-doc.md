@@ -579,7 +579,7 @@ Blog Page:
         - headings[2]
         - offer (title, icon, description)
 
-## Miscellaneous 
+## Miscellaneous
 1. hotel can change the theme (color) of the website
 1. hotel can change the contnet (headings, descriptions, images) 
 1. option to select and change template
@@ -594,4 +594,20 @@ Blog Page:
 1. nginx configuration to map domain with the template path(template path should be hidden only the pages path can be visible)
     1. `<domain>/template11/home`   not allowed
     1. `<domain>/home`              allowed
+1. When requesting hotel data from a template show loading indicator if not able to get the data show error message.
+1. if hotel is deleted all the resource from the hotel should be deleted.
 
+## Insertion query order (respect foreign keys)
+
+1. Templates
+1. Template_pages
+1. TemplateSections
+1. Hotels
+1. HotelTemplates
+1. HotelSections
+1. HotelSectionHeadings
+1. HotelSectionDescriptions
+1. HotelSectionImages
+
+## Tracking
+`Template_pages → Templates → TemplateSections → HotelSections` (indirect relation through templates)
