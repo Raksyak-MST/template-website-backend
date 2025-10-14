@@ -24,6 +24,11 @@ WHERE hp.hotel_id = 3
   AND hp.id = 1 
 ORDER BY hs.id, hsh.id, hsd.id, hsi.id;
 
+-- Get the View table names for the current database
+SELECT TABLE_NAME
+FROM INFORMATION_SCHEMA.VIEWS
+WHERE TABLE_SCHEMA = DATABASE();
+
 -- Get All headings by hotel section id
 SELECT heading_text
 FROM HotelSectionHeadings

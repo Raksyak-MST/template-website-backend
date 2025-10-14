@@ -623,4 +623,5 @@ Hotels
     1. `<domain>/home`              allowed
 1. When requesting hotel data from a template show loading indicator if not able to get the data show error message.
 1. if hotel is deleted all the resource from the hotel should be deleted.
+1. API to fill the HotelPages table data (this should be created on hotel template selection automatically).
 

@@ -52,6 +52,12 @@ INSERT INTO Hotels (name, owner_id, current_template_id, address, phone, email, 
 ('ManyataWoods', 1, 1, '123 Manyata Road, Bangalore', '9876543210', 'contact@manyatawoods.com', 'manyatawoods.com', '14:00', '12:00', '09:00', '22:00'),
 ('Oterra', 2, 1, '45 Oterra Street, Bangalore', '9876501234', 'info@oterra.com', 'oterra.com', '15:00', '11:00', '08:00', '23:00');
 
+-- Hotel templates
+
+INSERT INTO HotelTemplates (hotel_id, template_id, activated_on) VALUES
+(1, 1, '2025-10-14'),
+(2, 1, '2025-10-14');
+
 -- ## Hotel pages ##--
 -- ManyataWoods
 INSERT INTO HotelPages (hotel_id, template_page_id, is_active) VALUES
