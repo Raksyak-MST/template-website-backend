@@ -87,7 +87,7 @@
       "sectionName": "hero",
       "type": "hero",
       "headings": ["Welcome to Our Hotel", "Luxury Redefined"],
-      "bgImage": "/images/hero-bg.jpg"
+      "images": ["/images/room1.jpg"]
     },
     {
       "sectionName": "rooms",
