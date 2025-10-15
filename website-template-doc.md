@@ -6,7 +6,36 @@
 
 [Hotel CMS API](https://web.postman.co/workspace/My-Workspace~e63285cb-863d-4bb0-80d1-a70802ec3315/collection/46769986-6e591093-de3a-49ae-8e1a-19a395fa39c0?action=share&source=copy-link&creator=46769986)
 
-## API
+# Database
+
+## Insert query sequence from left to right
+
+`Templates → TemplatePages → TemplateSections → Hotels → HotelTemplates → HotelPages → HotelSections → HotelSectionHeadings / HotelSectionDescriptions / HotelSectionImages`
+
+## Created View tables
+
+1. HotelTemplateView – shows which hotel is using which template.
+1. HotelPagesView – shows all pages with the corresponding hotel name.
+1. HotelSectionHeadingsView – lists all headings with section name, page name, and hotel name.
+1. HotelSectionImagesView – lists all images with section name, page name, and hotel name.
+1. HotelSectionDescriptionsView – lists all descriptions with section name, page name, and hotel name
+
+## Left to Right Query
+
+```text
+Templates
+   → TemplatePages
+   → TemplateSections
+Hotels
+   → HotelTemplates → Templates
+   → HotelPages → TemplatePages
+   → HotelSections → HotelTemplates → HotelPages → TemplateSections
+        → HotelSectionHeadings
+        → HotelSectionDescriptions
+        → HotelSectionImages
+```
+
+# API
 
 `/api/hotels/:hotelId/pages` GET ALL pages
 `/api/hotels/:hotelId/pages/:pagename` GET Get all pages for hotel specific template
@@ -590,33 +619,6 @@ Blog Page:
   - offer section
     - headings[2]
     - offer (title, icon, description)
-
-## Insert query sequence from left to right
-
-`Templates → TemplatePages → TemplateSections → Hotels → HotelTemplates → HotelPages → HotelSections → HotelSectionHeadings / HotelSectionDescriptions / HotelSectionImages`
-
-## Created View tables
-
-1. HotelTemplateView – shows which hotel is using which template.
-1. HotelPagesView – shows all pages with the corresponding hotel name.
-1. HotelSectionHeadingsView – lists all headings with section name, page name, and hotel name.
-1. HotelSectionImagesView – lists all images with section name, page name, and hotel name.
-1. HotelSectionDescriptionsView – lists all descriptions with section name, page name, and hotel name
-
-## Left to Right Query
-
-```text
-Templates
-   → TemplatePages
-   → TemplateSections
-Hotels
-   → HotelTemplates → Templates
-   → HotelPages → TemplatePages
-   → HotelSections → HotelTemplates → HotelPages → TemplateSections
-        → HotelSectionHeadings
-        → HotelSectionDescriptions
-        → HotelSectionImages
-```
 
 ## Miscellaneous
 
