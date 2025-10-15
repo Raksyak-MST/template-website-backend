@@ -410,28 +410,27 @@ const removeTemplateFromHotel = (hotelId, templateId) =>
 const getHotelPageDetails = async (hotelId, pageName) => {
   try {
     // ---------------- QUERY ----------------
-    const query_str = `
-      SELECT 
-        tp.id AS template_id,
-        tp.page_name,
-        hs.id AS hotel_section_id,
-        ts.section_name,
-        ts.type AS section_type,
-        GROUP_CONCAT(DISTINCT hsh.heading_text ORDER BY hsh.id SEPARATOR '||' ) AS headings,
-        GROUP_CONCAT(DISTINCT hsd.description_text ORDER BY hsd.id SEPARATOR '||' ) AS descriptions,
-        GROUP_CONCAT(DISTINCT hsi.image_url ORDER BY hsi.id SEPARATOR '||' ) AS images
-      FROM Hotels h
-      JOIN HotelPages hp ON hp.hotel_id = h.id
-      JOIN TemplatePages tp ON tp.id = hp.template_page_id
-      JOIN HotelSections hs ON hs.hotel_page_id = hp.id
-      JOIN TemplateSections ts ON ts.id = hs.template_section_id
-      LEFT JOIN HotelSectionHeadings hsh ON hsh.hotel_section_id = hs.id
-      LEFT JOIN HotelSectionDescriptions hsd ON hsd.hotel_section_id = hs.id
-      LEFT JOIN HotelSectionImages hsi ON hsi.hotel_section_id = hs.id
-      WHERE h.id = 3 AND tp.page_name = "Home"
-      GROUP BY hs.id, ts.section_name, ts.type, tp.id, tp.page_name
-      ORDER BY hs.id;
-    `;
+    const query_str = `SELECT 
+  tp.id AS template_id,
+  tp.page_name,
+  hs.id AS hotel_section_id,
+  ts.section_name,
+  ts.type AS section_type,
+  GROUP_CONCAT(DISTINCT hsh.heading_text ORDER BY hsh.id) AS headings,
+  GROUP_CONCAT(DISTINCT hsd.description_text ORDER BY hsd.id) AS descriptions,
+  GROUP_CONCAT(DISTINCT hsi.image_url ORDER BY hsi.id) AS images
+  FROM Hotels h
+  JOIN HotelPages hp ON hp.hotel_id = h.id
+  JOIN TemplatePages tp ON tp.id = hp.template_page_id
+  JOIN HotelSections hs ON hs.hotel_page_id = hp.id
+  JOIN TemplateSections ts ON ts.id = hs.template_section_id
+  LEFT JOIN HotelSectionHeadings hsh ON hsh.hotel_section_id = hs.id
+  LEFT JOIN HotelSectionDescriptions hsd ON hsd.hotel_section_id = hs.id
+  LEFT JOIN HotelSectionImages hsi ON hsi.hotel_section_id = hs.id
+  WHERE h.id = ? AND tp.page_name = ?
+  GROUP BY hs.id, ts.section_name, ts.type, tp.id, tp.page_name
+  ORDER BY hs.id;
+`;
 
     // ---------------- EXECUTE QUERY ----------------
     const rows = await query(query_str, [hotelId, pageName]);
