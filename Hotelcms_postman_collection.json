@@ -1,6 +1,8 @@
 {
   "info": {
     "name": "Hotel CMS API",
+    "_postman_id": "f9f7c34b-0d2a-4b54-a123-9b123456abcd",
+    "description": "API Collection for Hotel CMS System (Hotels, Templates, Pages, Sections, etc.)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -93,6 +95,44 @@
     {
       "name": "Get Footer",
       "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/footer" }
+    },
+    {
+      "name": "Create Template",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/templates",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Luxury Template\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Template Page",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/template-pages",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"template_id\": 1,\n  \"page_name\": \"home\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Template Section",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/template-sections",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"template_id\": 1,\n  \"section_name\": \"hero\",\n  \"type\": \"banner\"\n}"
+        }
+      }
     }
   ]
 }
+
+

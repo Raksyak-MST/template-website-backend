@@ -117,14 +117,14 @@ app.get("/api/templates/:id", async (req, res) => {
 });
 
 // CREATE a new template
-app.post("/api/templates", async (req, res) => {
-  try {
-    const result = await createTemplate(req.body);
-    res.status(201).json({ message: "Template created successfully", result });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to create template", reason: error });
-  }
-});
+// app.post("/api/templates", async (req, res) => {
+//   try {
+//     const result = await createTemplate(req.body);
+//     res.status(201).json({ message: "Template created successfully", result });
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to create template", reason: error });
+//   }
+// });
 
 // UPDATE template by ID
 app.put("/api/templates/:id", async (req, res) => {
@@ -297,6 +297,70 @@ app.delete("/api/hotels/:hotelId/templates/:templateId", async (req, res) => {
   }
 });
 
+// -------------------- Create Template --------------------
+app.post("/api/templates", async (req, res) => {
+  try {
+    const { name } = req.body;
+    if (!name)
+      return res.status(400).json({ error: "Template name is required" });
+
+    const result = await createTemplate({ name });
+    res.status(201).json({
+      message: "Template created successfully",
+      id: result.insertId,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create template", reason: error });
+  }
+});
+
+// -------------------- Create Template Page --------------------
+app.post("/api/template-pages", async (req, res) => {
+  try {
+    const { template_id, page_name } = req.body;
+    if (!template_id || !page_name)
+      return res
+        .status(400)
+        .json({ error: "template_id and page_name are required" });
+
+    const result = await createTemplatePage({ template_id, page_name });
+    res.status(201).json({
+      message: "Template page created successfully",
+      id: result.insertId,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to create template page", reason: error });
+  }
+});
+
+// -------------------- Create Template Section --------------------
+app.post("/api/template-sections", async (req, res) => {
+  try {
+    const { template_id, section_name, type, is_optional } = req.body;
+    if (!template_id || !section_name)
+      return res
+        .status(400)
+        .json({ error: "template_id and section_name are required" });
+
+    const result = await createTemplateSection({
+      template_id,
+      section_name,
+      type,
+      is_optional,
+    });
+    res.status(201).json({
+      message: "Template section created successfully",
+      id: result.insertId,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to create template section", reason: error });
+  }
+});
+
 // ------------------------ HELPER FUNCTIONS ------------------------
 
 // Generic query wrapper to support async/await
@@ -319,7 +383,7 @@ const deleteHotel = (id) => query("DELETE FROM Hotels WHERE id = ?", [id]);
 // ------------------------ TEMPLATES ------------------------
 const getTemplates = () => query("SELECT * FROM Templates");
 const getTemplate = (id) => query("SELECT * FROM Templates WHERE id = ?", [id]);
-const createTemplate = (data) => query("INSERT INTO Templates SET ?", data);
+//const createTemplate = (data) => query("INSERT INTO Templates SET ?", data);
 const updateTemplate = (id, data) =>
   query("UPDATE Templates SET ? WHERE id = ?", [data, id]);
 const deleteTemplate = (id) =>
@@ -359,7 +423,10 @@ const getHeadings = (hotelId) =>
     `SELECT hsh.*
      FROM HotelSectionHeadings hsh
      JOIN HotelSections hs ON hs.id = hsh.hotel_section_id
-     WHERE hsh.hotel_id = ?`,
+     JOIN HotelPages hp ON hp.id = hs.hotel_page_id
+     JOIN Hotels h ON h.id = hp.hotel_id
+     WHERE h.id = ?
+     ORDER BY hs.id`,
     [hotelId]
   );
 
@@ -368,7 +435,10 @@ const getDescriptions = (hotelId) =>
     `SELECT hsd.*
      FROM HotelSectionDescriptions hsd
      JOIN HotelSections hs ON hs.id = hsd.hotel_section_id
-     WHERE hsd.hotel_id = ?`,
+     JOIN HotelPages hp ON hp.id = hs.hotel_page_id
+     JOIN Hotels h ON h.id = hp.hotel_id
+     WHERE h.id = ?
+     ORDER BY hs.id`,
     [hotelId]
   );
 
@@ -377,7 +447,10 @@ const getImages = (hotelId) =>
     `SELECT hsi.*
      FROM HotelSectionImages hsi
      JOIN HotelSections hs ON hs.id = hsi.hotel_section_id
-     WHERE hsi.hotel_id = ?`,
+     JOIN HotelPages hp ON hp.id = hs.hotel_page_id
+     JOIN Hotels h ON h.id = hp.hotel_id
+     WHERE h.id = ?
+     ORDER BY hs.id`,
     [hotelId]
   );
 
@@ -483,6 +556,29 @@ const getHotelPageDetails = async (hotelId, pageName) => {
     return { error: "Failed to fetch page details", reason: err.message };
   }
 };
+
+// Create Template
+const createTemplate = (data) =>
+  query("INSERT INTO Templates (name) VALUES (?)", [data.name]);
+
+// Create Template Page
+const createTemplatePage = (data) =>
+  query("INSERT INTO TemplatePages (template_id, page_name) VALUES (?, ?)", [
+    data.template_id,
+    data.page_name,
+  ]);
+
+// Create Template Section
+const createTemplateSection = (data) =>
+  query(
+    "INSERT INTO TemplateSections (template_id, section_name, type, is_optional) VALUES (?, ?, ?, ?)",
+    [
+      data.template_id,
+      data.section_name,
+      data.type || null,
+      data.is_optional ? 1 : 0,
+    ]
+  );
 
 // ------------------------ START SERVER ------------------------
 app.listen(port, () => console.log(`✅ Server running on port ${port}`));
