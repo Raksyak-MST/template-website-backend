@@ -597,11 +597,11 @@ Blog Page:
 
 ## Created View tables
 
-HotelTemplateView – shows which hotel is using which template.
-HotelPagesView – shows all pages with the corresponding hotel name.
-HotelSectionHeadingsView – lists all headings with section name, page name, and hotel name.
-HotelSectionImagesView – lists all images with section name, page name, and hotel name.
-HotelSectionDescriptionsView – lists all descriptions with section name, page name, and hotel name
+1. HotelTemplateView – shows which hotel is using which template.
+1. HotelPagesView – shows all pages with the corresponding hotel name.
+1. HotelSectionHeadingsView – lists all headings with section name, page name, and hotel name.
+1. HotelSectionImagesView – lists all images with section name, page name, and hotel name.
+1. HotelSectionDescriptionsView – lists all descriptions with section name, page name, and hotel name
 
 ## Left to Right Query
 
