@@ -1,83 +1,87 @@
 ## DB Diagram
+
 [DB diagram](https://dbdiagram.io/d/website_template_2-68e7a6f5d2b621e4220dbfe6)
+
+## Postman Collection
+
+[Hotel CMS API](https://.postman.co/workspace/My-Workspace~e63285cb-863d-4bb0-80d1-a70802ec3315/collection/46769986-6e591093-de3a-49ae-8e1a-19a395fa39c0?action=share&creator=46769986)
 
 ## API
 
-`/api/hotels/:hotelId/pages`            GET      ALL pages
-`/api/hotels/:hotelId/pages/:pagename`  GET      Get all pages for hotel specific template
+`/api/hotels/:hotelId/pages` GET ALL pages
+`/api/hotels/:hotelId/pages/:pagename` GET Get all pages for hotel specific template
+
 - query params
-    - `sections=home,room,dining`               (fetch only specific sections)
-    - `include=heading,description,images,footer` (fetch required content)
+  - `sections=home,room,dining` (fetch only specific sections)
+  - `include=heading,description,images,footer` (fetch required content)
 
 ## API for editing (Template Management UI)
 
 ### 1. Templates APIs
 
-`/api/templates`      GET     Get all templates (id, name, page_name)                  
-`/api/templates/:id`  GET     Get single template by id                                
-`/api/templates`      POST    Create a new template                                    
-`/api/templates/:id`  PUT     Update template details                                  
-`/api/templates/:id`  DELETE  Delete template (hotels’ template_id may be set to NULL) 
-
+`/api/templates` GET Get all templates (id, name, page_name)  
+`/api/templates/:id` GET Get single template by id  
+`/api/templates` POST Create a new template  
+`/api/templates/:id` PUT Update template details  
+`/api/templates/:id` DELETE Delete template (hotels’ template_id may be set to NULL)
 
 ### 2. Hotels APIs
-`/api/hotels`      GET     List all hotels with template info            
-`/api/hotels/:id`  GET     Get hotel details including template_id       
-`/api/hotels`      POST    Create new hotel                              
-`/api/hotels/:id`  PUT     Update hotel info                             
-`/api/hotels/:id`  DELETE  Delete hotel and all related sections/content 
+
+`/api/hotels` GET List all hotels with template info  
+`/api/hotels/:id` GET Get hotel details including template_id  
+`/api/hotels` POST Create new hotel  
+`/api/hotels/:id` PUT Update hotel info  
+`/api/hotels/:id` DELETE Delete hotel and all related sections/content
 
 ### 3. HotelTemplates APIs
-`/api/hotels/:hotelId/templates`      GET     Get templates used by a hotel (history or active)
-`/api/hotels/:hotelId/templates`      POST    Assign a template to a hotel                     
-`/api/hotels/:hotelId/templates/:id`  PUT     Update activated_on or template assignment       
-`/api/hotels/:hotelId/templates/:id`  DELETE  Remove template from hotel                       
+
+`/api/hotels/:hotelId/templates` GET Get templates used by a hotel (history or active)
+`/api/hotels/:hotelId/templates` POST Assign a template to a hotel  
+`/api/hotels/:hotelId/templates/:id` PUT Update activated_on or template assignment  
+`/api/hotels/:hotelId/templates/:id` DELETE Remove template from hotel
 
 ### 4. HotelSections APIs
 
-`/api/hotels/:hotelId/sections`             GET     Get all sections for a hotel (with headings, descriptions, images) 
-`/api/hotels/:hotelId/sections/:sectionId`  GET     Get a specific section’s content                                   
-`/api/hotels/:hotelId/sections`             POST    Add new section instance for hotel                                 
-`/api/hotels/:hotelId/sections/:sectionId`  PUT     Update section (toggle `is_active`)                                
-`/api/hotels/:hotelId/sections/:sectionId`  DELETE  Delete hotel section                                               
-
+`/api/hotels/:hotelId/sections` GET Get all sections for a hotel (with headings, descriptions, images)
+`/api/hotels/:hotelId/sections/:sectionId` GET Get a specific section’s content  
+`/api/hotels/:hotelId/sections` POST Add new section instance for hotel  
+`/api/hotels/:hotelId/sections/:sectionId` PUT Update section (toggle `is_active`)  
+`/api/hotels/:hotelId/sections/:sectionId` DELETE Delete hotel section
 
 ### 5. HotelSectionHeadings APIs
 
-`/api/sections/:sectionId/headings`  GET     List headings for section          
-`/api/sections/:sectionId/headings`  POST    Add heading                        
-`/api/headings/:id`                  PUT     Update heading text or order_index 
-`/api/headings/:id`                  DELETE  Delete heading                     
-
+`/api/sections/:sectionId/headings` GET List headings for section  
+`/api/sections/:sectionId/headings` POST Add heading  
+`/api/headings/:id` PUT Update heading text or order_index
+`/api/headings/:id` DELETE Delete heading
 
 ### 6. HotelSectionDescriptions APIs
 
-`/api/sections/:sectionId/descriptions`  GET     List descriptions for section          
-`/api/sections/:sectionId/descriptions`  POST    Add description                        
-`/api/descriptions/:id`                  PUT     Update description text or order_index 
-`/api/descriptions/:id`                  DELETE  Delete description                     
-
+`/api/sections/:sectionId/descriptions` GET List descriptions for section  
+`/api/sections/:sectionId/descriptions` POST Add description  
+`/api/descriptions/:id` PUT Update description text or order_index
+`/api/descriptions/:id` DELETE Delete description
 
 ### 7. HotelSectionImages APIs
 
-`/api/sections/:sectionId/images`  GET     List images for section                 
-`/api/sections/:sectionId/images`  POST    Add image (path, alt_text, order_index) 
-`/api/images/:id`                  PUT     Update image path/alt_text/order_index  
-`/api/images/:id`                  DELETE  Delete image                            
-
+`/api/sections/:sectionId/images` GET List images for section  
+`/api/sections/:sectionId/images` POST Add image (path, alt_text, order_index)
+`/api/images/:id` PUT Update image path/alt_text/order_index  
+`/api/images/:id` DELETE Delete image
 
 ### 8. HotelFooter & HotelFooterLinks APIs
 
-`/api/sections/:sectionId/footer` GET     Get footer content for section                 
-`/api/sections/:sectionId/footer` POST    Add footer content                             
-`/api/footer/:id`                 PUT     Update footer (address, phone, email, timings) 
-`/api/footer/:id`                 DELETE  Delete footer                                  
-`/api/footer/:footerId/links`     GET     List footer links                              
-`/api/footer/:footerId/links`     POST    Add link                                       
-`/api/footer/links/:id`           PUT     Update link                                    
-`/api/footer/links/:id`           DELETE  Delete link                                    
+`/api/sections/:sectionId/footer` GET Get footer content for section  
+`/api/sections/:sectionId/footer` POST Add footer content  
+`/api/footer/:id` PUT Update footer (address, phone, email, timings)
+`/api/footer/:id` DELETE Delete footer  
+`/api/footer/:footerId/links` GET List footer links  
+`/api/footer/:footerId/links` POST Add link  
+`/api/footer/links/:id` PUT Update link  
+`/api/footer/links/:id` DELETE Delete link
 
 ## Combined API response
+
 ```JSON
 {
   "templateId": "6",
@@ -135,32 +139,34 @@
 ```
 
 ## Common components
-- Hero section          (headings, descriptions, bg image, images)
-- Room section          (headings, descriptions, room card)
-- Amenities section     (headings, descriptions, bg image)
-- Contact section       (phone number, email, address, location for map)
-- Restaurant section    (Headings descriptions, menu card, images)
-- About section         (headings, descriptions, images)
-- Room card             (title, descriptions, image, occupancy) 
-- Menu Card             (title, menu items list)
-- Meeting section       (headings, descriptions, images)
-- Testimonials section  (headings, descriptions, testimonial) 
-- Testimonial Card      (author name, review)
-- Booking Policies      (headings, descriptions, hotel rules check in, check out, amenities usage)
-- Offers sections       (headings, descriptions, offer card)
-- Offer card            (image, heading, description)
-- Dining section        (headings, descriptions, dine in restaurant card)
-- Restaurant card       (images, title, description)
-- Blog Card             (image, title, description)
-- Activities section    (headings, descriptions, activity card)
-- Activity card         (images, title, description)
-- Gallery section       (headings, descriptions, images)
-- Our accommodations    (headings, accommodation)
-- Accommodation Card    (headings, Occupancy, image)
+
+- Hero section (headings, descriptions, bg image, images)
+- Room section (headings, descriptions, room card)
+- Amenities section (headings, descriptions, bg image)
+- Contact section (phone number, email, address, location for map)
+- Restaurant section (Headings descriptions, menu card, images)
+- About section (headings, descriptions, images)
+- Room card (title, descriptions, image, occupancy)
+- Menu Card (title, menu items list)
+- Meeting section (headings, descriptions, images)
+- Testimonials section (headings, descriptions, testimonial)
+- Testimonial Card (author name, review)
+- Booking Policies (headings, descriptions, hotel rules check in, check out, amenities usage)
+- Offers sections (headings, descriptions, offer card)
+- Offer card (image, heading, description)
+- Dining section (headings, descriptions, dine in restaurant card)
+- Restaurant card (images, title, description)
+- Blog Card (image, title, description)
+- Activities section (headings, descriptions, activity card)
+- Activity card (images, title, description)
+- Gallery section (headings, descriptions, images)
+- Our accommodations (headings, accommodation)
+- Accommodation Card (headings, Occupancy, image)
 
 # Website Components
 
 ## template 1:
+
 Hero Section : 4 images
 Overview Section : 1 Heading, 3 Descriptions, 2 images
 Rooms Section : 1 Heading, 1 Description, Room (titles, Images)
@@ -173,6 +179,7 @@ Contact Section : Mobile number, Email, Location for map
 Footer Section : Address, Mobile Number, Email, Timings, Links
 
 ## template 2:
+
 Home Page:
 -> Hero section : 1 Heading, 1 Subheading, 1 Image
 -> Restaurant section : 2 Images, 1 Heading, 1 Description
@@ -194,7 +201,7 @@ About us Page:
 -> About us section : 1 Heading, 1 Sub-heading, 1 Description
 -> Amenities section : 1 Image, 8 Icons with titles
 -> Booking policies & Amenities Section : Booking policies Tab (1 Heading, 4 sub-headings, 4 Descriptions) & Amenities Tab (1 Heading, 50 Bullet point titles)
--> Reserve Now Section : 1 Images, 1 Heading, 1 Sub-heading 
+-> Reserve Now Section : 1 Images, 1 Heading, 1 Sub-heading
 -> Footer section : Address, Number, Email, Icons
 
 SPA Page:
@@ -266,325 +273,330 @@ Blog Page:
 -> Footer Section : Number, Email, Address
 
 # template 5
+
 - home page
-    - hero section
-        - heading[2]
-    - about hotel section
-        - headings[1], description[2], images
-    - hotel offers
-        - heading[2] 
-        - offer (image, title, small description)
-    - rooms section
-        - heading[1], bg image
-    - activities section
-        - heading[1], bg image
-    - testimonial section
-        - headings[1], 
-        - testimoial (author, review description)
-    - our gallery section
-        - headings[1], description[1], images[4]
-    - our location section
-        - headings[2], hotel location (used for map)
-    - contact us section,
-        - heading[1]
-        - hotel (address, email, phone, logo, timmings(check in, check out, hotel open, hotel close))
+  - hero section
+    - heading[2]
+  - about hotel section
+    - headings[1], description[2], images
+  - hotel offers
+    - heading[2]
+    - offer (image, title, small description)
+  - rooms section
+    - heading[1], bg image
+  - activities section
+    - heading[1], bg image
+  - testimonial section
+    - headings[1],
+    - testimoial (author, review description)
+  - our gallery section
+    - headings[1], description[1], images[4]
+  - our location section
+    - headings[2], hotel location (used for map)
+  - contact us section,
+    - heading[1]
+    - hotel (address, email, phone, logo, timmings(check in, check out, hotel open, hotel close))
 
 - terms and conditions page
 
 - privacy and cookies statement page
 
 - room page
-    - hero section
-        - headings[2], bg image.
-    - rooms section
-        - room (room image, room type, room occupancy, room small description)
+  - hero section
+    - headings[2], bg image.
+  - rooms section
+    - room (room image, room type, room occupancy, room small description)
 
 - property page
-    - hero section
-        - headings[2], bg image.
-    - about property section
-        - headings[2], description[2].
-    - property amenities section
-        - amenities(title, icon)
-    - property rules and regulations section
-        - headings[1], descriptions[1]
+  - hero section
+    - headings[2], bg image.
+  - about property section
+    - headings[2], description[2].
+  - property amenities section
+    - amenities(title, icon)
+  - property rules and regulations section
+    - headings[1], descriptions[1]
 
 - activities page
-    - hero section
-        - headings[2], bg image,
-    - activities section
-        - activity (activity name, occupancy, activity description)
+  - hero section
+    - headings[2], bg image,
+  - activities section
+    - activity (activity name, occupancy, activity description)
 
 - contact page
-    - hero section
-        - headings[2], bg image
-    - conctact us section
-        - hotel location (for map), heading, description, hotel description bullet points.
-        - contact us form
-            - heading, descriptions[1] 
-        - social section
-            - hotel images[4]
-    
+  - hero section
+    - headings[2], bg image
+  - conctact us section
+    - hotel location (for map), heading, description, hotel description bullet points.
+    - contact us form
+      - heading, descriptions[1]
+    - social section
+      - hotel images[4]
+
 ## template 6
 
 - home page
-    - hero section
-        - headings[2], bg image
-    - room section
-        - headings[2], descriptions[1], images[2]
-    - about hotel section
-        - headings[2], descriptions[1], images[1]
-    - dining section
-        - headings[2], descriptions[1], images[1]
-    - spa section
-        - headings[2], descriptions[1], images[2]
-    - why choose us section
-        - headings[4]
-    - footer
-        - hotel (address, phone, email, hotel timings (check in, check out, opening, closing).
-        - terms and conditions
-        - privacy and cookies
-        - accessibility statement
+  - hero section
+    - headings[2], bg image
+  - room section
+    - headings[2], descriptions[1], images[2]
+  - about hotel section
+    - headings[2], descriptions[1], images[1]
+  - dining section
+    - headings[2], descriptions[1], images[1]
+  - spa section
+    - headings[2], descriptions[1], images[2]
+  - why choose us section
+    - headings[4]
+  - footer
+    - hotel (address, phone, email, hotel timings (check in, check out, opening, closing).
+    - terms and conditions
+    - privacy and cookies
+    - accessibility statement
 
 - rooms page
-    - hero section
-        - headings[2], bg image
-    - rooms section
-        - room (type, occupancy, description)
+  - hero section
+    - headings[2], bg image
+  - rooms section
+    - room (type, occupancy, description)
 
 - about page
-    - hero section
-        - headings[2], bg image
-    - amenities section
-        - headings[1], descriptions[1]
-        - amenity (title, description, icon)
+  - hero section
+    - headings[2], bg image
+  - amenities section
+    - headings[1], descriptions[1]
+    - amenity (title, description, icon)
 
 - restaurant page
-    - hero section
-        - headings[2], bg image
-    - about restaurant section
-        - headings[2], descriptions[1], images[1]
-    - menu section
-        - heading[1], menu (title, description, price)
+  - hero section
+    - headings[2], bg image
+  - about restaurant section
+    - headings[2], descriptions[1], images[1]
+  - menu section
+    - heading[1], menu (title, description, price)
 
 - spa page
-    - hero section
-        - headings[2], bg image
-    - about spa section
-        - headings[2], descriptions[1], images[1]
-    - spa amenities
-        - spa (title, description, image)
+  - hero section
+    - headings[2], bg image
+  - about spa section
+    - headings[2], descriptions[1], images[1]
+  - spa amenities
+    - spa (title, description, image)
 
 - about hotel page
-    - hero section
-        - headings[2], bg image
-    - our story section
-        - headings[2], descriptions[1], images[2]
-    - meet our tema section
-        - headings[1], descriptions[1]
-        - team (name, position, description, image)
+  - hero section
+    - headings[2], bg image
+  - our story section
+    - headings[2], descriptions[1], images[2]
+  - meet our tema section
+    - headings[1], descriptions[1]
+    - team (name, position, description, image)
 
 - contact page
-    - hero section
-        - headings[2], bg image
-    - contact form section
-        - headings[2]
-    - contact information section
-        - hotel (email, phone, address)
-    - our location section
-        - map location
+  - hero section
+    - headings[2], bg image
+  - contact form section
+    - headings[2]
+  - contact information section
+    - hotel (email, phone, address)
+  - our location section
+    - map location
 
-## template 7 
+## template 7
 
 - home page
-    - hero section
-        - headings[2], bg image
-    - about hotel
-        - headings[2], descriptions[1], images[1]
-    - why choose us section
-        - headings[2], amenity( title, description, icon)
-    - our rooms section
-        - headings[2], descriptions[1]
-        - room (image, title, occupancy, no. of bed, image)
-    - gallery section
-        - heading[1], descriptions[1], images[6]
-    - testimoials section
-        - headings[2]
-        - testimoial(author, review)
-    - social section
-        - heading[1], images[4]
-    - about section
-        - headings[2]
+  - hero section
+    - headings[2], bg image
+  - about hotel
+    - headings[2], descriptions[1], images[1]
+  - why choose us section
+    - headings[2], amenity( title, description, icon)
+  - our rooms section
+    - headings[2], descriptions[1]
+    - room (image, title, occupancy, no. of bed, image)
+  - gallery section
+    - heading[1], descriptions[1], images[6]
+  - testimoials section
+    - headings[2]
+    - testimoial(author, review)
+  - social section
+    - heading[1], images[4]
+  - about section
+    - headings[2]
 - footer
-    - hotel (address, email, phone number, timings (check in, check out, opening, closing)))
+  - hotel (address, email, phone number, timings (check in, check out, opening, closing)))
 
 - rooms page
-    - hero section
-        - headigns[2], bg image
-    - delicious breakfast section
-        - headings[2], descriptins[1]
-    - rooms section
-    - room (headings[2], description, images[6])
+  - hero section
+    - headigns[2], bg image
+  - delicious breakfast section
+    - headings[2], descriptins[1]
+  - rooms section
+  - room (headings[2], description, images[6])
 
 - gallery page
-    - hero section  
-        - headings[2], bg image
-    - gallery section
-        - images[24]
+  - hero section
+    - headings[2], bg image
+  - gallery section
+    - images[24]
 
 - negihborhood page
-    - hero section
-        - headings[2], bg image
-    - about section
-        - headings[2], descriptions[1], images[1]
-    - activities section
-        - headings[2]
-        - activity(title, description, icon)
+  - hero section
+    - headings[2], bg image
+  - about section
+    - headings[2], descriptions[1], images[1]
+  - activities section
+    - headings[2]
+    - activity(title, description, icon)
 
 - about page
-    - hero section
-        - headings[2], bg image
-    - about section
-        - heading[2], descriptions[1], images[1]
-    - dine in section
-        - headings[2], descriptions[1]
-        - dine (image, title, description)
-    - teams section
-        - headings[1], description[1]
-        - team (image, name, position, description)
-    - socila section
-        - headings[1]
-        - images[4]
+  - hero section
+    - headings[2], bg image
+  - about section
+    - heading[2], descriptions[1], images[1]
+  - dine in section
+    - headings[2], descriptions[1]
+    - dine (image, title, description)
+  - teams section
+    - headings[1], description[1]
+    - team (image, name, position, description)
+  - socila section
+    - headings[1]
+    - images[4]
 
 - contact page
-    - hero section
-        - headings[2]
-    - contact section
-        - timings (phone support, check in check out, opening closing)
-        - hotel (phone, email, address)
-    - contact form section
-        - headings[1], descriptions[1], map location
-        - guide to arrive (transportation available from and to the hotel)
+  - hero section
+    - headings[2]
+  - contact section
+    - timings (phone support, check in check out, opening closing)
+    - hotel (phone, email, address)
+  - contact form section
+    - headings[1], descriptions[1], map location
+    - guide to arrive (transportation available from and to the hotel)
 
 ## template 9
+
 - home page
-    - hero section
-        - slide(title, description, image)
-    - about section
-        - headings[1], descriptions[1]
-    - villas section
-        - headings[1]
-        - villa(image, name, no. of guests)
-    - activity section
-        - headings[1], descriptions[1]
-    - testimoials
-        - headings[2]
-        - testimoial (author, review)
+  - hero section
+    - slide(title, description, image)
+  - about section
+    - headings[1], descriptions[1]
+  - villas section
+    - headings[1]
+    - villa(image, name, no. of guests)
+  - activity section
+    - headings[1], descriptions[1]
+  - testimoials
+    - headings[2]
+    - testimoial (author, review)
 
 - about us page
-    - hero section
-        - headings[1], descriptions[2], images[1]
-    - teams section
-        - headings[2], descriptions[1], images[1]
-    - villas
-        - vila(image, name, guests)
+  - hero section
+    - headings[1], descriptions[2], images[1]
+  - teams section
+    - headings[2], descriptions[1], images[1]
+  - villas
+    - vila(image, name, guests)
 
 - contact page
-    - hero section
-        - headings[1], descriptions[1], images[1]
-    - contact form section
-        - headings[1], descriptions[2], hotel(email, phone)
-    - social section
-        - images[5]
+  - hero section
+    - headings[1], descriptions[1], images[1]
+  - contact form section
+    - headings[1], descriptions[2], hotel(email, phone)
+  - social section
+    - images[5]
 
 - things to do blogs page
-    - hero section
-        - heading[2]
-    - blogs
-        - blog (image, title, description)
+  - hero section
+    - heading[2]
+  - blogs
+    - blog (image, title, description)
 
 ## template 11
-- home page
-    - hero section
-        - headings[2], bg image 
-    - testimoials section
-        - headings[2]
-        - testimoial (author, review)
-    - about section
-        - headings[2], descriptions[2]
 
-    - rooms section
-        - headings[2]
-        - room (type, people, amenities, image)
-    - specials offer section
-        - headings[2]
-        - offer (title, description, image)
-    - activities section    
-        - activity (title, image)
-    - location section
-        - headings[2]
-        - map location, phone, email, address
-    - social section
-        - images[5]
-    - newslater section
-        - headings[2]
+- home page
+  - hero section
+    - headings[2], bg image
+  - testimoials section
+    - headings[2]
+    - testimoial (author, review)
+  - about section
+    - headings[2], descriptions[2]
+
+  - rooms section
+    - headings[2]
+    - room (type, people, amenities, image)
+  - specials offer section
+    - headings[2]
+    - offer (title, description, image)
+  - activities section
+    - activity (title, image)
+  - location section
+    - headings[2]
+    - map location, phone, email, address
+  - social section
+    - images[5]
+  - newslater section
+    - headings[2]
 
 - rooms page
-    - hero section
-        - headings[2], bg image
-    - accommodation section
-        - headings[2], descriptions[2]
-        - room timings (check in, check out, rules)
-    - amenities
-        - headings[2]
-        - amenity (type, images[7]
-    - bookings card
-        - booking form
-            - headings[1], description[1]
+  - hero section
+    - headings[2], bg image
+  - accommodation section
+    - headings[2], descriptions[2]
+    - room timings (check in, check out, rules)
+  - amenities
+    - headings[2]
+    - amenity (type, images[7]
+  - bookings card
+    - booking form
+      - headings[1], description[1]
 - specials page
-    - hero section
-        - headings[2], bg image
-    - offers section
-        - headings[2]
-        - offer (image, title, days, description)
-    - ad section
-        - headings[2], descriptions[1]
+  - hero section
+    - headings[2], bg image
+  - offers section
+    - headings[2]
+    - offer (image, title, days, description)
+  - ad section
+    - headings[2], descriptions[1]
 - activities page
-    - hero section
-        - headings[2], bg image
-    - things to do section
-        - headings[2], descriptions[2]
-    - activity (image, name, description)
+  - hero section
+    - headings[2], bg image
+  - things to do section
+    - headings[2], descriptions[2]
+  - activity (image, name, description)
 - gallery page
-    - hero section
-        - headings[2], bg image
-    - category (name, images[6])
+  - hero section
+    - headings[2], bg image
+  - category (name, images[6])
 - about page
-    - hero section
-        - headings[2], bg image
-    - about us section
-        - headings[2], descriptions[1], images[1]
-    - location
-        - headings[2], descriptions[1], hotel (email, phone, address), map location
-    - amenities section
-        - amenity (title, icon)
-    - our team section
-        - headigns[2], descriptions[2], name, position
+  - hero section
+    - headings[2], bg image
+  - about us section
+    - headings[2], descriptions[1], images[1]
+  - location
+    - headings[2], descriptions[1], hotel (email, phone, address), map location
+  - amenities section
+    - amenity (title, icon)
+  - our team section
+    - headigns[2], descriptions[2], name, position
 - contact page
-    - hero section
-        - headings[2]
-    - contact form
-    - location section
-        - headings[2]
-        - address, email, phone, map location
-    - offer section
-        - headings[2]
-        - offer (title, icon, description)
+  - hero section
+    - headings[2]
+  - contact form
+  - location section
+    - headings[2]
+    - address, email, phone, map location
+  - offer section
+    - headings[2]
+    - offer (title, icon, description)
 
-## Insert query sequence from left to right 
+## Insert query sequence from left to right
+
 `Templates → TemplatePages → TemplateSections → Hotels → HotelTemplates → HotelPages → HotelSections → HotelSectionHeadings / HotelSectionDescriptions / HotelSectionImages`
 
 ## Created View tables
+
 HotelTemplateView – shows which hotel is using which template.
 HotelPagesView – shows all pages with the corresponding hotel name.
 HotelSectionHeadingsView – lists all headings with section name, page name, and hotel name.
@@ -592,6 +604,7 @@ HotelSectionImagesView – lists all images with section name, page name, and ho
 HotelSectionDescriptionsView – lists all descriptions with section name, page name, and hotel name
 
 ## Left to Right Query
+
 ```text
 Templates
    → TemplatePages
@@ -605,23 +618,22 @@ Hotels
         → HotelSectionImages
 ```
 
-
 ## Miscellaneous
+
 1. hotel can change the theme (color) of the website
-1. hotel can change the contnet (headings, descriptions, images) 
+1. hotel can change the contnet (headings, descriptions, images)
 1. option to select and change template
 1. two hotel can use the same template
 1. hotel will be provided with the Admin panel to make the changes
 1. hotel can switch to different template
 1. all the templates should be in one project of individual project for each template.
 1. make a default contents for all templates.
-    1. create common entry(headings, descriptions, images) for all the templates
+   1. create common entry(headings, descriptions, images) for all the templates
 1. there should be a way to differenciate, which data(headings, descriptions, images) to show for same template choosen by hotel.
 1. deploy and map hotel domain with template.
 1. nginx configuration to map domain with the template path(template path should be hidden only the pages path can be visible)
-    1. `<domain>/template11/home`   not allowed
-    1. `<domain>/home`              allowed
+   1. `<domain>/template11/home` not allowed
+   1. `<domain>/home` allowed
 1. When requesting hotel data from a template show loading indicator if not able to get the data show error message.
 1. if hotel is deleted all the resource from the hotel should be deleted.
 1. API to fill the HotelPages table data (this should be created on hotel template selection automatically).
-
