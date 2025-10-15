@@ -53,13 +53,12 @@ INSERT INTO Hotels (name, owner_id, current_template_id, address, phone, email, 
 ('Oterra', 2, 1, '45 Oterra Street, Bangalore', '9876501234', 'info@oterra.com', 'oterra.com', '15:00', '11:00', '08:00', '23:00');
 
 -- Hotel templates
-
 INSERT INTO HotelTemplates (hotel_id, template_id, activated_on) VALUES
 (1, 1, '2025-10-14'),
 (2, 1, '2025-10-14');
 
 -- ## Hotel pages ##--
--- ManyataWoods
+
 INSERT INTO HotelPages (hotel_id, template_page_id, is_active) VALUES
 (1, 1, TRUE),
 (1, 2, TRUE),
@@ -75,7 +74,6 @@ INSERT INTO HotelPages (hotel_id, template_page_id, is_active) VALUES
 (1, 12, TRUE),
 (1, 13, TRUE);
 
--- Oterra
 INSERT INTO HotelPages (hotel_id, template_page_id, is_active) VALUES
 (2, 1, TRUE),
 (2, 2, TRUE),
@@ -85,8 +83,6 @@ INSERT INTO HotelPages (hotel_id, template_page_id, is_active) VALUES
 (2, 8, TRUE);
 
 -- ## Hotel sections ## --
-
--- ManyataWoods
 INSERT INTO HotelSections (hotel_page_id, template_section_id, is_active) VALUES
 (1, 1, TRUE),
 (2, 2, TRUE),
@@ -102,7 +98,6 @@ INSERT INTO HotelSections (hotel_page_id, template_section_id, is_active) VALUES
 (12, 12, TRUE),
 (13, 13, TRUE);
 
--- Oterra
 INSERT INTO HotelSections (hotel_page_id, template_section_id, is_active) VALUES
 (14, 14, TRUE),
 (15, 15, TRUE),
@@ -112,9 +107,7 @@ INSERT INTO HotelSections (hotel_page_id, template_section_id, is_active) VALUES
 (19, 19, TRUE);
 
 -- Hotel section headings
-
 INSERT INTO HotelSectionHeadings (hotel_section_id, heading_text, order_index) VALUES
--- ManyataWoods
 (1, 'Welcome to ManyataWoods', 1),
 (2, 'Our Luxury Rooms', 1),
 (3, 'Amenities You Will Love', 1),
@@ -131,7 +124,6 @@ INSERT INTO HotelSectionHeadings (hotel_section_id, heading_text, order_index) V
 
 -- Hotel section descriptions
 INSERT INTO HotelSectionDescriptions (hotel_section_id, description_text, order_index) VALUES
--- ManyataWoods
 (1, 'Experience luxury and comfort at ManyataWoods in Bangalore.', 1),
 (2, 'Rooms designed for ultimate relaxation with modern amenities.', 1),
 (3, 'Swimming pool, gym, spa, and more to pamper our guests.', 1),
@@ -148,7 +140,6 @@ INSERT INTO HotelSectionDescriptions (hotel_section_id, description_text, order_
 
 -- Hotel section images
 INSERT INTO HotelSectionImages (hotel_section_id, image_url, order_index) VALUES
--- ManyataWoods
 (1, 'https://example.com/manyatawoods/hero.jpg', 1),
 (2, 'https://example.com/manyatawoods/room1.jpg', 1),
 (2, 'https://example.com/manyatawoods/room2.jpg', 2),
