@@ -4,7 +4,7 @@
 
 ## Postman Collection
 
-[Hotel CMS API](https://.postman.co/workspace/My-Workspace~e63285cb-863d-4bb0-80d1-a70802ec3315/collection/46769986-6e591093-de3a-49ae-8e1a-19a395fa39c0?action=share&creator=46769986)
+[Hotel CMS API](https://web.postman.co/workspace/My-Workspace~e63285cb-863d-4bb0-80d1-a70802ec3315/collection/46769986-6e591093-de3a-49ae-8e1a-19a395fa39c0?action=share&source=copy-link&creator=46769986)
 
 ## API
 
