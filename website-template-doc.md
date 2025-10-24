@@ -639,3 +639,5 @@ Blog Page:
 1. When requesting hotel data from a template show loading indicator if not able to get the data show error message.
 1. if hotel is deleted all the resource from the hotel should be deleted.
 1. API to fill the HotelPages table data (this should be created on hotel template selection automatically).
+1. If all templates are served from single react application, application crash all templates will creash.
+1. When adding new hotel, all the entries for the hotel content (entries) should not be inserted manually.
