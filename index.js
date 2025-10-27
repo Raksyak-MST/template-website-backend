@@ -181,23 +181,6 @@ app.get("/api/hotels/:hotelId/pages/:pagename", async (req, res) => {
   }
 });
 
-app.get("/api/hotels/:hotelId/pages/:pagename", async (req, res) => {
-  try {
-    const { hotelId, pagename } = req.params;
-    const { sections, include } = req.query; // optional filters
-    const template_id = 1; // Replace with actual template ID retrieval logic
-    console.log(pagename);
-    const query_str = `SELECT tp.page_name, hp.id AS hotel_page_id, hs.id AS hotel_section_id, ts.section_name, GROUP_CONCAT(DISTINCT hsh.heading_text ORDER BY hsh.id) AS headings, GROUP_CONCAT(DISTINCT hsd.description_text ORDER BY hsd.id) AS descriptions, GROUP_CONCAT(DISTINCT hsi.image_url ORDER BY hsi.id) AS images FROM Hotels h JOIN HotelPages hp ON hp.hotel_id = h.id JOIN TemplatePages tp ON tp.id = hp.template_page_id JOIN HotelSections hs ON hs.hotel_page_id = hp.id JOIN TemplateSections ts ON ts.id = hs.template_section_id LEFT JOIN HotelSectionHeadings hsh ON hsh.hotel_section_id = hs.id LEFT JOIN HotelSectionDescriptions hsd ON hsd.hotel_section_id = hs.id LEFT JOIN HotelSectionImages hsi ON hsi.hotel_section_id = hs.id WHERE h.id = ? AND tp.page_name = ? GROUP BY hs.id, tp.page_name, hp.id, ts.section_name ORDER BY hs.id;`;
-    console.log("Executing query:", query_str);
-    const data = await query(query_str, [hotelId, pagename]);
-    res.status(200).json(data);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Failed to fetch page details", reason: error });
-  }
-});
-
 // -----------------------------------------------------------------------------
 // 4️⃣ SECTIONS, HEADINGS, DESCRIPTIONS, IMAGES, FOOTER APIs
 // -----------------------------------------------------------------------------
@@ -501,7 +484,7 @@ const getHotelPageDetails = async (hotelId, pageName) => {
       LEFT JOIN HotelSectionHeadings hsh ON hsh.hotel_section_id = hs.id
       LEFT JOIN HotelSectionDescriptions hsd ON hsd.hotel_section_id = hs.id
       LEFT JOIN HotelSectionImages hsi ON hsi.hotel_section_id = hs.id
-      WHERE h.id = ? AND tp.page_name = ? 
+      WHERE h.id = ? AND tp.page_name = ? AND h.current_template_id = tp.template_id
       GROUP BY hs.id, ts.section_name, ts.type, tp.id, tp.page_name
       ORDER BY hs.id;
     `;
@@ -515,6 +498,7 @@ const getHotelPageDetails = async (hotelId, pageName) => {
     // ---------------- PROCESS SECTIONS ----------------
     const sections = rows.map((row) => {
       const secObj = {
+        //sectionID: row.hotel_section_id,
         sectionName: row.section_name,
         type: row.section_type,
         headings: row.headings ? row.headings.split("||") : [],
