@@ -1,7 +1,8 @@
 const express = require("express") // Import Express framework
 const mysql = require("mysql2") // Import MySQL client
 const cors = require("cors") // Import CORS middleware
-require("dotenv").config({ path: ".env.local" }) // Load environment variables from .env.local
+require("dotenv").config({ path: ".env" })
+require("dotenv").config({ path: ".env.local", override: true }) // .env.local overrides global .env
 
 const app = express() // Initialize Express app
 const DEFAULT_PORT = 3000 // Default server port
