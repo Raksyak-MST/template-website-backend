@@ -191,6 +191,8 @@ Hotels
 - Gallery section (headings, descriptions, images)
 - Our accommodations (headings, accommodation)
 - Accommodation Card (headings, Occupancy, image)
+- Story section (headings, descriptions, image)
+- highlight section (headings, description, image)
 
 # Website Components
 
@@ -636,6 +638,7 @@ Blog Page:
 1. nginx configuration to map domain with the template path(template path should be hidden only the pages path can be visible)
    1. `<domain>/template11/home` not allowed
    1. `<domain>/home` allowed
+1. how to show the template for the hotel with they selected.
 1. When requesting hotel data from a template show loading indicator if not able to get the data show error message.
 1. if hotel is deleted all the resource from the hotel should be deleted.
 1. API to fill the HotelPages table data (this should be created on hotel template selection automatically).
