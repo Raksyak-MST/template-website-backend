@@ -22,6 +22,30 @@ CREATE TABLE TemplateSections (
   FOREIGN KEY (template_id) REFERENCES Templates(id) ON DELETE CASCADE
 );
 
+CREATE TABLE TemplateSectionHeadings (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  template_section_id INT NOT NULL,
+  heading_text VARCHAR(255),
+  order_index INT,
+  FOREIGN KEY (template_section_id) REFERENCES TemplateSections(id)
+);
+
+CREATE TABLE TemplateSectionDescriptions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  template_section_id INT NOT NULL,
+  description_text TEXT,
+  order_index INT,
+  FOREIGN KEY (template_section_id) REFERENCES TemplateSections(id)
+);
+
+CREATE TABLE TemplateSectionImages (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  template_section_id INT NOT NULL,
+  image_url VARCHAR(255),
+  order_index INT,
+  FOREIGN KEY (template_section_id) REFERENCES TemplateSections(id)
+);
+
 CREATE TABLE Hotels (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
