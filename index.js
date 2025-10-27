@@ -455,7 +455,7 @@ const getFooter = (hotelId) =>
      FROM HotelSections hs
      JOIN TemplateSections ts ON ts.id = hs.template_section_id
      JOIN HotelTemplates ht ON ht.id = hs.hotel_template_id
-     WHERE ht.hotel_id = ? AND ts.type = 'footer'`,
+     WHERE ht.hotel_id = ? AND ts.type =`,
     [hotelId],
   )
 
