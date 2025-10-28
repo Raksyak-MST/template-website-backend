@@ -213,3 +213,23 @@ JOIN Hotels h
 JOIN TemplatePages tp
   ON tp.id = hp.template_page_id
 ORDER BY h.name, tp.page_name, ts.section_name, hsd.order_index, hsd.id;
+
+
+-- Create Procedures
+
+DELIMITER $$
+CREATE PROCEDURE ShowHotelPages(IN p_hotel_id INT)
+BEGIN
+  SELECT 
+    hp.*,
+    tp.page_name,
+    tp.template_id
+  FROM HotelPages AS hp
+  JOIN TemplatePages AS tp 
+    ON tp.id = hp.template_page_id
+  JOIN Hotels AS h
+    ON h.id = hp.hotel_id
+  WHERE hp.hotel_id = p_hotel_id
+    AND tp.template_id = h.current_template_id;
+END$$
+DELIMITER ;
