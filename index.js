@@ -344,6 +344,152 @@ app.post("/api/template-sections", async (req, res) => {
   }
 });
 
+// -------------------- Assign Template Section to Hotel Page --------------------
+app.post("/api/hotel-sections", async (req, res) => {
+  try {
+    const { hotel_page_id, template_section_id } = req.body;
+    if (!hotel_page_id || !template_section_id) {
+      return res.status(400).json({
+        error: "hotel_page_id and template_section_id are required",
+      });
+    }
+
+    const result = await createHotelSection({
+      hotel_page_id,
+      template_section_id,
+    });
+
+    res.status(201).json({
+      message: "Template section assigned to hotel page successfully",
+      id: result.insertId,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to assign template section to hotel page",
+      reason: error.message,
+    });
+  }
+});
+
+// -------------------- Add Section Headings --------------------
+app.post("/api/hotel-section-headings", async (req, res) => {
+  try {
+    const { hotel_section_id, heading_text } = req.body;
+    if (!hotel_section_id || !heading_text)
+      return res
+        .status(400)
+        .json({ error: "hotel_section_id and heading_text are required" });
+
+    const result = await addHotelSectionHeading({
+      hotel_section_id,
+      heading_text,
+    });
+
+    res.status(201).json({
+      message: "Heading added successfully",
+      id: result.insertId,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to add heading",
+      reason: error.message,
+    });
+  }
+});
+
+// -------------------- Add Section Descriptions --------------------
+app.post("/api/hotel-section-descriptions", async (req, res) => {
+  try {
+    const { hotel_section_id, description_text } = req.body;
+    if (!hotel_section_id || !description_text)
+      return res
+        .status(400)
+        .json({ error: "hotel_section_id and description_text are required" });
+
+    const result = await addHotelSectionDescription({
+      hotel_section_id,
+      description_text,
+    });
+
+    res.status(201).json({
+      message: "Description added successfully",
+      id: result.insertId,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to add description",
+      reason: error.message,
+    });
+  }
+});
+
+// -------------------- Add Section Images --------------------
+app.post("/api/hotel-section-images", async (req, res) => {
+  try {
+    const { hotel_section_id, image_url, image_urls } = req.body;
+
+    // Validate hotel_section_id
+    if (!hotel_section_id)
+      return res.status(400).json({ error: "hotel_section_id is required" });
+
+    // Case 1️⃣ — Add multiple images
+    if (Array.isArray(image_urls) && image_urls.length > 0) {
+      const values = image_urls.map((url) => [hotel_section_id, url]);
+      const result = await query(
+        "INSERT INTO HotelSectionImages (hotel_section_id, image_url) VALUES ?",
+        [values]
+      );
+
+      return res.status(201).json({
+        message: "Images added successfully",
+        insertedCount: result.affectedRows,
+      });
+    }
+
+    // Case 2️⃣ — Add single image
+    if (!image_url)
+      return res
+        .status(400)
+        .json({ error: "image_url or image_urls are required" });
+
+    const result = await addHotelSectionImage({
+      hotel_section_id,
+      image_url,
+    });
+
+    res.status(201).json({
+      message: "Image added successfully",
+      id: result.insertId,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to add image(s)",
+      reason: error.message,
+    });
+  }
+});
+
+// -------------------- Get All Template Sections --------------------
+app.get("/api/templates/:templateId/sections", async (req, res) => {
+  try {
+    const template_id = req.params.templateId;
+
+    const sections = await getAllTemplateSections(template_id);
+
+    res.status(200).json({
+      message: "Template sections fetched successfully",
+      count: sections.length,
+      sections,
+    });
+  } catch (error) {
+    console.error("Error fetching template sections:", error);
+    res.status(500).json({
+      error: "Failed to fetch template sections",
+      reason: error.message,
+    });
+  }
+});
+
 // ------------------------ HELPER FUNCTIONS ------------------------
 
 // Generic query wrapper to support async/await
@@ -375,7 +521,22 @@ const deleteTemplate = (id) =>
 // ------------------------ PAGES & SECTIONS ------------------------
 const getPages = (hotelId) =>
   query(
-    "SELECT tp.* FROM TemplatePages tp JOIN Hotels h ON h.current_template_id = tp.template_id WHERE h.id = ?",
+    `
+    SELECT 
+      hp.id AS hotel_page_id,
+      hp.hotel_id,
+      hp.template_page_id,
+      tp.page_name,
+      tp.template_id,
+      h.name AS hotel_name
+    FROM HotelPages AS hp
+    JOIN Hotels AS h 
+      ON h.id = hp.hotel_id
+    JOIN TemplatePages AS tp 
+      ON tp.id = hp.template_page_id
+    WHERE h.id = ? AND h.current_template_id = tp.template_id
+    ORDER BY hp.id ASC;
+  `,
     [hotelId]
   );
 
@@ -563,6 +724,70 @@ const createTemplateSection = (data) =>
       data.is_optional ? 1 : 0,
     ]
   );
+// Create Hotel Section
+const createHotelSection = (data) =>
+  query(
+    "INSERT INTO HotelSections (hotel_page_id, template_section_id) VALUES (?, ?)",
+    [data.hotel_page_id, data.template_section_id]
+  );
+
+// Add Hotel Section Heading
+const addHotelSectionHeading = (data) =>
+  query(
+    "INSERT INTO HotelSectionHeadings (hotel_section_id, heading_text) VALUES (?, ?)",
+    [data.hotel_section_id, data.heading_text]
+  );
+
+// Add Hotel Section Description
+const addHotelSectionDescription = (data) =>
+  query(
+    "INSERT INTO HotelSectionDescriptions (hotel_section_id, description_text) VALUES (?, ?)",
+    [data.hotel_section_id, data.description_text]
+  );
+
+// Add Hotel Section Image
+const addHotelSectionImages = async (data) => {
+  const { hotel_section_id, image_urls } = data;
+
+  if (!Array.isArray(image_urls) || image_urls.length === 0) {
+    throw new Error("image_urls must be a non-empty array");
+  }
+
+  const values = image_urls.map((url) => [hotel_section_id, url]);
+
+  const queryStr = `
+    INSERT INTO HotelSectionImages (hotel_section_id, image_url)
+    VALUES ?
+  `;
+
+  return query(queryStr, [values]);
+};
+
+// Get All Template Sections (with optional template_id filter)
+const getAllTemplateSections = async (template_id) => {
+  let queryStr = `
+    SELECT 
+      ts.id AS template_section_id,
+      ts.section_name,
+      ts.type,
+      ts.template_id,
+      tp.page_name
+    FROM TemplateSections AS ts
+    LEFT JOIN TemplatePages AS tp 
+      ON tp.template_id = ts.template_id
+  `;
+
+  const params = [];
+
+  if (template_id) {
+    queryStr += " WHERE ts.template_id = ?";
+    params.push(template_id);
+  }
+
+  queryStr += " ORDER BY ts.id ASC";
+
+  return query(queryStr, params);
+};
 
 // ------------------------ START SERVER ------------------------
 app.listen(port, () => console.log(`✅ Server running on port ${port}`));
