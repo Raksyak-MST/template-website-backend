@@ -37,8 +37,8 @@ Hotels
 
 # API
 
-`/api/hotels/:hotelId/pages` GET ALL pages
-`/api/hotels/:hotelId/pages/:pagename` GET Get all pages for hotel specific template
+`/api/hotels/:hotelId/pages`            GET   ALL pages
+`/api/hotels/:hotelId/pages/:pagename`  GET   Get all pages for hotel specific template
 
 - query params
   - `sections=home,room,dining` (fetch only specific sections)
@@ -71,11 +71,11 @@ Hotels
 
 ### 4. HotelSections APIs
 
-`/api/hotels/:hotelId/sections` GET Get all sections for a hotel (with headings, descriptions, images)
-`/api/hotels/:hotelId/sections/:sectionId` GET Get a specific section’s content  
-`/api/hotels/:hotelId/sections` POST Add new section instance for hotel  
-`/api/hotels/:hotelId/sections/:sectionId` PUT Update section (toggle `is_active`)  
-`/api/hotels/:hotelId/sections/:sectionId` DELETE Delete hotel section
+`/api/hotels/:hotelId/sections`             GET   Get all sections for a hotel (with headings, descriptions, images)
+`/api/hotels/:hotelId/sections/:sectionId`  GET       Get a specific section’s content  
+`/api/hotels/:hotelId/sections`             POST      Add new section instance for hotel  
+`/api/hotels/:hotelId/sections/:sectionId`  PUT       Update section (toggle `is_active`)  
+`/api/hotels/:hotelId/sections/:sectionId`  DELETE    Delete hotel section
 
 ### 5. HotelSectionHeadings APIs
 
@@ -98,17 +98,6 @@ Hotels
 `/api/images/:id` PUT Update image path/alt_text/order_index  
 `/api/images/:id` DELETE Delete image
 
-### 8. HotelFooter & HotelFooterLinks APIs
-
-`/api/sections/:sectionId/footer` GET Get footer content for section  
-`/api/sections/:sectionId/footer` POST Add footer content  
-`/api/footer/:id` PUT Update footer (address, phone, email, timings)
-`/api/footer/:id` DELETE Delete footer  
-`/api/footer/:footerId/links` GET List footer links  
-`/api/footer/:footerId/links` POST Add link  
-`/api/footer/links/:id` PUT Update link  
-`/api/footer/links/:id` DELETE Delete link
-
 ## Combined API response
 
 ```JSON
@@ -120,6 +109,7 @@ Hotels
       "sectionName": "hero",
       "type": "hero",
       "headings": ["Welcome to Our Hotel", "Luxury Redefined"],
+      "descriptions": [],
       "images": ["/images/room1.jpg"]
     },
     {
@@ -142,57 +132,39 @@ Hotels
       "headings": ["Fine Dining", "Taste That Lasts"],
       "descriptions": ["Experience world-class cuisines from our chefs."],
       "images": ["/images/dining.jpg"]
-    },
-    {
-      "sectionName": "footer",
-      "type": "footer",
-      "hotel": {
-        "address": "123 Beach Road, Goa, India",
-        "phone": "+91 9876543210",
-        "email": "info@hotelgoa.com",
-        "timings": {
-          "checkIn": "2:00 PM",
-          "checkOut": "11:00 AM",
-          "opening": "24 Hours",
-          "closing": "Open All Days"
-        }
-      },
-      "links": {
-        "terms": "/terms",
-        "privacy": "/privacy",
-        "accessibility": "/accessibility"
-      }
     }
   ]
 }
 ```
 
 ## Common components
-
 - Hero section (headings, descriptions, bg image, images)
 - Room section (headings, descriptions, room card)
 - Amenities section (headings, descriptions, bg image)
 - Contact section (phone number, email, address, location for map)
 - Restaurant section (Headings descriptions, menu card, images)
 - About section (headings, descriptions, images)
-- Room card (title, descriptions, image, occupancy)
-- Menu Card (title, menu items list)
 - Meeting section (headings, descriptions, images)
 - Testimonials section (headings, descriptions, testimonial)
-- Testimonial Card (author name, review)
 - Booking Policies (headings, descriptions, hotel rules check in, check out, amenities usage)
 - Offers sections (headings, descriptions, offer card)
-- Offer card (image, heading, description)
 - Dining section (headings, descriptions, dine in restaurant card)
-- Restaurant card (images, title, description)
-- Blog Card (image, title, description)
 - Activities section (headings, descriptions, activity card)
-- Activity card (images, title, description)
 - Gallery section (headings, descriptions, images)
 - Our accommodations (headings, accommodation)
-- Accommodation Card (headings, Occupancy, image)
 - Story section (headings, descriptions, image)
-- highlight section (headings, description, image)
+- Highlight section (headings, description, image)
+- Promotional section (headings, descriptions, image)
+
+# Card Components
+- Menu Card (title, menu items list)
+- Room card (title, descriptions, image, occupancy)
+- Offer card (image, heading, description)
+- Restaurant card (images, title, description)
+- Activity card (images, title, description)
+- Testimonial Card (author name, review)
+- Blog Card (image, title, description)
+- Accommodation Card (headings, Occupancy, image)
 
 # Website Components
 
