@@ -53,6 +53,7 @@ Hotels
 `/api/templates` POST Create a new template  
 `/api/templates/:id` PUT Update template details  
 `/api/templates/:id` DELETE Delete template (hotels’ template_id may be set to NULL)
+`/api/templates/:id/pages` GET Get pages of the template
 
 ### 2. Hotels APIs
 
