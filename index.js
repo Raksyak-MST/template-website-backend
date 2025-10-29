@@ -401,23 +401,25 @@ app.post("/api/hotel-section-headings", async (req, res) => {
 app.post("/api/hotel-section-descriptions", async (req, res) => {
   try {
     const { hotel_section_id, description_text } = req.body;
-    if (!hotel_section_id || !description_text)
-      return res
-        .status(400)
-        .json({ error: "hotel_section_id and description_text are required" });
 
-    const result = await addHotelSectionDescription({
+    if (!hotel_section_id || !description_text) {
+      return res.status(400).json({
+        error: "hotel_section_id and description_text are required",
+      });
+    }
+
+    const result = await addHotelSectionDescriptions({
       hotel_section_id,
       description_text,
     });
 
     res.status(201).json({
-      message: "Description added successfully",
-      id: result.insertId,
+      message: "Description(s) added successfully",
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     res.status(500).json({
-      error: "Failed to add description",
+      error: "Failed to add description(s)",
       reason: error.message,
     });
   }
@@ -738,12 +740,30 @@ const addHotelSectionHeading = (data) =>
     [data.hotel_section_id, data.heading_text]
   );
 
-// Add Hotel Section Description
-const addHotelSectionDescription = (data) =>
-  query(
-    "INSERT INTO HotelSectionDescriptions (hotel_section_id, description_text) VALUES (?, ?)",
-    [data.hotel_section_id, data.description_text]
-  );
+// -------------------- Add Multiple Hotel Section Descriptions --------------------
+const addHotelSectionDescriptions = async (data) => {
+  const { hotel_section_id, description_text } = data;
+
+  // Ensure we have a valid section id and at least one description
+  if (!hotel_section_id || !description_text)
+    throw new Error("hotel_section_id and description_text are required");
+
+  // Normalize to array
+  const descriptions = Array.isArray(description_text)
+    ? description_text
+    : [description_text];
+
+  // Build multi-row insert query
+  const values = descriptions.map((desc) => [hotel_section_id, desc]);
+  const sql = `
+    INSERT INTO HotelSectionDescriptions (hotel_section_id, description_text)
+    VALUES ?
+  `;
+
+  // Use bulk insert
+  const result = await query(sql, [values]);
+  return result;
+};
 
 // Add Hotel Section Image
 const addHotelSectionImages = async (data) => {
