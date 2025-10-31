@@ -138,6 +138,10 @@ Hotels
 }
 ```
 
+## Admin panel UI
+
+
+
 ## Common components
 - Hero section (headings, descriptions, bg image, images)
 - Room section (headings, descriptions, room card)
@@ -599,6 +603,7 @@ Blog Page:
 
 1. hotel can change the theme (color) of the website
 1. hotel can change the contnet (headings, descriptions, images)
+1. hotel user can pick and mark template as Active to use it for live website (no need to update the headings and content if the template sections are same).
 1. option to select and change template
 1. two hotel can use the same template
 1. hotel will be provided with the Admin panel to make the changes
