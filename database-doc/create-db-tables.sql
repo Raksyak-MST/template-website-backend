@@ -233,3 +233,82 @@ BEGIN
     AND tp.template_id = h.current_template_id;
 END$$
 DELIMITER ;
+
+CREATE TABLE HotelImages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hotel_id INT NOT NULL,
+  image_url VARCHAR(255) NOT NULL,
+  type ENUM('logo', 'banner', 'gallery', 'misc') DEFAULT 'gallery',
+  order_index INT,
+  is_active BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Rooms (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hotel_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  type VARCHAR(50),
+  price DECIMAL(10,2),
+  capacity INT,
+  description TEXT,
+  is_active BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE
+);
+
+CREATE TABLE RoomImages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  room_id INT NOT NULL,
+  image_url VARCHAR(255) NOT NULL,
+  order_index INT,
+  FOREIGN KEY (room_id) REFERENCES Rooms(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Testimonials (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hotel_id INT NOT NULL,
+  author_name VARCHAR(100),
+  rating INT CHECK (rating BETWEEN 1 AND 5),
+  content TEXT,
+  image_url VARCHAR(255),
+  order_index INT,
+  FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Activities (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hotel_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  description TEXT,
+  schedule VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ActivityImages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  activity_id INT NOT NULL,
+  image_url VARCHAR(255),
+  order_index INT,
+  FOREIGN KEY (activity_id) REFERENCES Activities(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Restaurants (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hotel_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  cuisine VARCHAR(100),
+  description TEXT,
+  opening_time VARCHAR(20),
+  closing_time VARCHAR(20),
+  is_active BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE
+);
+
+CREATE TABLE RestaurantImages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  restaurant_id INT NOT NULL,
+  image_url VARCHAR(255),
+  order_index INT,
+  FOREIGN KEY (restaurant_id) REFERENCES Restaurants(id) ON DELETE CASCADE
+);
