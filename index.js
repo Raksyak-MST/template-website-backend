@@ -1,29 +1,29 @@
-const express = require("express") // Import Express framework
-const mysql = require("mysql2") // Import MySQL client
-const cors = require("cors") // Import CORS middleware
-require("dotenv").config({ path: ".env" })
-require("dotenv").config({ path: ".env.local", override: true }) // .env.local overrides global .env
+const express = require("express"); // Import Express framework
+const mysql = require("mysql2"); // Import MySQL client
+const cors = require("cors"); // Import CORS middleware
+require("dotenv").config({ path: ".env" });
+require("dotenv").config({ path: ".env.local", override: true }); // .env.local overrides global .env
 
-const app = express() // Initialize Express app
-const DEFAULT_PORT = 3000 // Default server port
-const allowedOrigin = (process.env.CORS_ORIGINS ?? "").split(",") // Allowed origins for CORS
-const port = process.env.PORT ?? DEFAULT_PORT // Use environment port if available
+const app = express(); // Initialize Express app
+const DEFAULT_PORT = 3000; // Default server port
+const allowedOrigin = (process.env.CORS_ORIGINS ?? "").split(","); // Allowed origins for CORS
+const port = process.env.PORT ?? DEFAULT_PORT; // Use environment port if available
 
 // ------------------------ MIDDLEWARE ------------------------
 // CORS configuration to allow requests from specific origins
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigin.includes(origin)) callback(null, true)
-      else callback(new Error("Not allowed by CORS"))
+      if (!origin || allowedOrigin.includes(origin)) callback(null, true);
+      else callback(new Error("Not allowed by CORS"));
     },
-  }),
-)
+  })
+);
 
 // Parse incoming JSON requests
-app.use(express.json())
+app.use(express.json());
 // Parse URL-encoded data
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 
 // ------------------------ MYSQL CONFIG ------------------------
 const connection = mysql.createConnection({
@@ -31,13 +31,13 @@ const connection = mysql.createConnection({
   user: process.env.DB_USER, // Database username
   password: process.env.DB_PASSWORD, // Database password
   database: process.env.DB_DATABASE, // Database name
-})
+});
 
 // ------------------------ HEALTH CHECK ------------------------
 app.get("/health", (req, res) => {
   // Simple endpoint to check if server is running
-  res.status(200).json({ status: "OK", message: "Server is alive!" })
-})
+  res.status(200).json({ status: "OK", message: "Server is alive!" });
+});
 
 // -----------------------------------------------------------------------------
 // 1️⃣ HOTELS APIs
@@ -46,52 +46,52 @@ app.get("/health", (req, res) => {
 // GET all hotels
 app.get("/api/hotels", async (req, res) => {
   try {
-    const hotels = await getHotels()
-    res.status(200).json(hotels)
+    const hotels = await getHotels();
+    res.status(200).json(hotels);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch hotels", reason: error })
+    res.status(500).json({ error: "Failed to fetch hotels", reason: error });
   }
-})
+});
 
 // GET a single hotel by ID
 app.get("/api/hotels/:id", async (req, res) => {
   try {
-    const hotel = await getHotel(req.params.id)
-    res.status(200).json(hotel)
+    const hotel = await getHotel(req.params.id);
+    res.status(200).json(hotel);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch hotel", reason: error })
+    res.status(500).json({ error: "Failed to fetch hotel", reason: error });
   }
-})
+});
 
 // CREATE a new hotel
 app.post("/api/hotels", async (req, res) => {
   try {
-    const result = await createHotel(req.body)
-    res.status(201).json({ message: "Hotel created successfully", result })
+    const result = await createHotel(req.body);
+    res.status(201).json({ message: "Hotel created successfully", result });
   } catch (error) {
-    res.status(500).json({ error: "Failed to create hotel", reason: error })
+    res.status(500).json({ error: "Failed to create hotel", reason: error });
   }
-})
+});
 
 // UPDATE hotel by ID
 app.put("/api/hotels/:id", async (req, res) => {
   try {
-    const result = await updateHotel(req.params.id, req.body)
-    res.status(200).json({ message: "Hotel updated successfully", result })
+    const result = await updateHotel(req.params.id, req.body);
+    res.status(200).json({ message: "Hotel updated successfully", result });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update hotel", reason: error })
+    res.status(500).json({ error: "Failed to update hotel", reason: error });
   }
-})
+});
 
 // DELETE hotel by ID
 app.delete("/api/hotels/:id", async (req, res) => {
   try {
-    const result = await deleteHotel(req.params.id)
-    res.status(200).json({ message: "Hotel deleted successfully", result })
+    const result = await deleteHotel(req.params.id);
+    res.status(200).json({ message: "Hotel deleted successfully", result });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete hotel", reason: error })
+    res.status(500).json({ error: "Failed to delete hotel", reason: error });
   }
-})
+});
 
 // -----------------------------------------------------------------------------
 // 2️⃣ TEMPLATES APIs
@@ -100,22 +100,22 @@ app.delete("/api/hotels/:id", async (req, res) => {
 // GET all templates
 app.get("/api/templates", async (req, res) => {
   try {
-    const templates = await getTemplates()
-    res.status(200).json(templates)
+    const templates = await getTemplates();
+    res.status(200).json(templates);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch templates", reason: error })
+    res.status(500).json({ error: "Failed to fetch templates", reason: error });
   }
-})
+});
 
 // GET single template by ID
 app.get("/api/templates/:id", async (req, res) => {
   try {
-    const template = await getTemplate(req.params.id)
-    res.status(200).json(template)
+    const template = await getTemplate(req.params.id);
+    res.status(200).json(template);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch template", reason: error })
+    res.status(500).json({ error: "Failed to fetch template", reason: error });
   }
-})
+});
 
 // CREATE a new template
 // app.post("/api/templates", async (req, res) => {
@@ -130,22 +130,22 @@ app.get("/api/templates/:id", async (req, res) => {
 // UPDATE template by ID
 app.put("/api/templates/:id", async (req, res) => {
   try {
-    const result = await updateTemplate(req.params.id, req.body)
-    res.status(200).json({ message: "Template updated successfully", result })
+    const result = await updateTemplate(req.params.id, req.body);
+    res.status(200).json({ message: "Template updated successfully", result });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update template", reason: error })
+    res.status(500).json({ error: "Failed to update template", reason: error });
   }
-})
+});
 
 // DELETE template by ID
 app.delete("/api/templates/:id", async (req, res) => {
   try {
-    const result = await deleteTemplate(req.params.id)
-    res.status(200).json({ message: "Template deleted successfully", result })
+    const result = await deleteTemplate(req.params.id);
+    res.status(200).json({ message: "Template deleted successfully", result });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete template", reason: error })
+    res.status(500).json({ error: "Failed to delete template", reason: error });
   }
-})
+});
 
 // -----------------------------------------------------------------------------
 // 3️⃣ PAGES APIs
@@ -154,28 +154,33 @@ app.delete("/api/templates/:id", async (req, res) => {
 // GET all pages for a hotel
 app.get("/api/hotels/:hotelId/pages", async (req, res) => {
   try {
-    const pages = await getPages(req.params.hotelId)
-    res.status(200).json(pages)
+    const pages = await getPages(req.params.hotelId);
+    res.status(200).json(pages);
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch hotel pages", reason: error })
+      .json({ error: "Failed to fetch hotel pages", reason: error });
   }
-})
+});
 
 // GET specific page details by hotelId and pagename
 app.get("/api/hotels/:hotelId/pages/:pagename", async (req, res) => {
   try {
-    const { hotelId, pagename } = req.params
-    const { sections, include } = req.query // optional filters
-    const data = await getHotelPageDetails(hotelId, pagename, sections, include)
-    res.status(200).json(data)
+    const { hotelId, pagename } = req.params;
+    const { sections, include } = req.query; // optional filters
+    const data = await getHotelPageDetails(
+      hotelId,
+      pagename,
+      sections,
+      include
+    );
+    res.status(200).json(data);
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch page details", reason: error })
+      .json({ error: "Failed to fetch page details", reason: error });
   }
-})
+});
 
 // -----------------------------------------------------------------------------
 // 4️⃣ SECTIONS, HEADINGS, DESCRIPTIONS, IMAGES, FOOTER APIs
@@ -184,57 +189,57 @@ app.get("/api/hotels/:hotelId/pages/:pagename", async (req, res) => {
 // GET all sections for a hotel
 app.get("/api/hotels/:hotelId/sections", async (req, res) => {
   try {
-    const sections = await getSections(req.params.hotelId)
-    res.status(200).json(sections)
+    const sections = await getSections(req.params.hotelId);
+    res.status(200).json(sections);
   } catch (error) {
     res.status(500).json({
       error: "Failed to fetch sections",
       reason: error,
-    })
+    });
   }
-})
+});
 
 // GET all headings for a hotel
 app.get("/api/hotels/:hotelId/headings", async (req, res) => {
   try {
-    const headings = await getHeadings(req.params.hotelId)
-    res.status(200).json(headings)
+    const headings = await getHeadings(req.params.hotelId);
+    res.status(200).json(headings);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch headings", reason: error })
+    res.status(500).json({ error: "Failed to fetch headings", reason: error });
   }
-})
+});
 
 // GET all descriptions for a hotel
 app.get("/api/hotels/:hotelId/descriptions", async (req, res) => {
   try {
-    const desc = await getDescriptions(req.params.hotelId)
-    res.status(200).json(desc)
+    const desc = await getDescriptions(req.params.hotelId);
+    res.status(200).json(desc);
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch descriptions", reason: error })
+      .json({ error: "Failed to fetch descriptions", reason: error });
   }
-})
+});
 
 // GET all images for a hotel
 app.get("/api/hotels/:hotelId/images", async (req, res) => {
   try {
-    const images = await getImages(req.params.hotelId)
-    res.status(200).json(images)
+    const images = await getImages(req.params.hotelId);
+    res.status(200).json(images);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch images", reason: error })
+    res.status(500).json({ error: "Failed to fetch images", reason: error });
   }
-})
+});
 
 // GET footer section for a hotel
 app.get("/api/hotels/:hotelId/footer", async (req, res) => {
   try {
-    const footer = await getFooter(req.params.hotelId)
-    res.status(200).json(footer)
+    const footer = await getFooter(req.params.hotelId);
+    res.status(200).json(footer);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch footer", reason: error })
+    res.status(500).json({ error: "Failed to fetch footer", reason: error });
   }
-})
+});
 
 // -----------------------------------------------------------------------------
 // 5️⃣ HOTEL TEMPLATES APIs
@@ -243,102 +248,102 @@ app.get("/api/hotels/:hotelId/footer", async (req, res) => {
 // GET all templates assigned to a hotel
 app.get("/api/hotels/:hotelId/templates", async (req, res) => {
   try {
-    const { hotelId } = req.params
-    const templates = await getHotelTemplates(hotelId)
-    res.status(200).json({ hotelId, templates })
+    const { hotelId } = req.params;
+    const templates = await getHotelTemplates(hotelId);
+    res.status(200).json({ hotelId, templates });
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch hotel templates", reason: error })
+      .json({ error: "Failed to fetch hotel templates", reason: error });
   }
-})
+});
 
 // ASSIGN a template to a hotel
 app.post("/api/hotels/:hotelId/templates", async (req, res) => {
   try {
-    const { hotelId } = req.params
-    const { template_id } = req.body
-    const result = await assignTemplateToHotel(hotelId, template_id)
-    res.status(201).json({ message: "Template assigned successfully", result })
+    const { hotelId } = req.params;
+    const { template_id } = req.body;
+    const result = await assignTemplateToHotel(hotelId, template_id);
+    res.status(201).json({ message: "Template assigned successfully", result });
   } catch (error) {
-    res.status(500).json({ error: "Failed to assign template", reason: error })
+    res.status(500).json({ error: "Failed to assign template", reason: error });
   }
-})
+});
 
 // REMOVE a template from a hotel
 app.delete("/api/hotels/:hotelId/templates/:templateId", async (req, res) => {
   try {
-    const { hotelId, templateId } = req.params
-    const result = await removeTemplateFromHotel(hotelId, templateId)
-    res.status(200).json({ message: "Template removed successfully", result })
+    const { hotelId, templateId } = req.params;
+    const result = await removeTemplateFromHotel(hotelId, templateId);
+    res.status(200).json({ message: "Template removed successfully", result });
   } catch (error) {
-    res.status(500).json({ error: "Failed to remove template", reason: error })
+    res.status(500).json({ error: "Failed to remove template", reason: error });
   }
-})
+});
 
 // -------------------- Create Template --------------------
 app.post("/api/templates", async (req, res) => {
   try {
-    const { name } = req.body
+    const { name } = req.body;
     if (!name)
-      return res.status(400).json({ error: "Template name is required" })
+      return res.status(400).json({ error: "Template name is required" });
 
-    const result = await createTemplate({ name })
+    const result = await createTemplate({ name });
     res.status(201).json({
       message: "Template created successfully",
       id: result.insertId,
-    })
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to create template", reason: error })
+    res.status(500).json({ error: "Failed to create template", reason: error });
   }
-})
+});
 
 // -------------------- Create Template Page --------------------
 app.post("/api/template-pages", async (req, res) => {
   try {
-    const { template_id, page_name } = req.body
+    const { template_id, page_name } = req.body;
     if (!template_id || !page_name)
       return res
         .status(400)
-        .json({ error: "template_id and page_name are required" })
+        .json({ error: "template_id and page_name are required" });
 
-    const result = await createTemplatePage({ template_id, page_name })
+    const result = await createTemplatePage({ template_id, page_name });
     res.status(201).json({
       message: "Template page created successfully",
       id: result.insertId,
-    })
+    });
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to create template page", reason: error })
+      .json({ error: "Failed to create template page", reason: error });
   }
-})
+});
 
 // -------------------- Create Template Section --------------------
 app.post("/api/template-sections", async (req, res) => {
   try {
-    const { template_id, section_name, type, is_optional } = req.body
+    const { template_id, section_name, type, is_optional } = req.body;
     if (!template_id || !section_name)
       return res
         .status(400)
-        .json({ error: "template_id and section_name are required" })
+        .json({ error: "template_id and section_name are required" });
 
     const result = await createTemplateSection({
       template_id,
       section_name,
       type,
       is_optional,
-    })
+    });
     res.status(201).json({
       message: "Template section created successfully",
       id: result.insertId,
-    })
+    });
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to create template section", reason: error })
+      .json({ error: "Failed to create template section", reason: error });
   }
-})
+});
 
 // -------------------- Assign Template Section to Hotel Page --------------------
 app.post("/api/hotel-sections", async (req, res) => {
@@ -370,25 +375,18 @@ app.post("/api/hotel-sections", async (req, res) => {
 // -------------------- Add Section Headings --------------------
 app.post("/api/hotel-section-headings", async (req, res) => {
   try {
-    const { hotel_section_id, heading_text } = req.body;
-    if (!hotel_section_id || !heading_text)
-      return res
-        .status(400)
-        .json({ error: "hotel_section_id and heading_text are required" });
-
-    const result = await addHotelSectionHeading({
-      hotel_section_id,
-      heading_text,
+    const result = await addHotelSectionHeadings(req.body);
+    res.status(200).json({
+      success: true,
+      message: "Heading(s) added successfully",
+      result,
     });
-
-    res.status(201).json({
-      message: "Heading added successfully",
-      id: result.insertId,
-    });
-  } catch (error) {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({
-      error: "Failed to add heading",
-      reason: error.message,
+      success: false,
+      message: "Error adding heading(s)",
+      error: err.message,
     });
   }
 });
@@ -450,7 +448,7 @@ app.post("/api/hotel-section-images", async (req, res) => {
         .status(400)
         .json({ error: "image_url or image_urls are required" });
 
-    const result = await addHotelSectionImage({
+    const result = await addHotelSectionImages({
       hotel_section_id,
       image_url,
     });
@@ -462,6 +460,91 @@ app.post("/api/hotel-section-images", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: "Failed to add image(s)",
+      reason: error.message,
+    });
+  }
+});
+
+// -------------------- Update Section Headings API --------------------
+app.put("/api/hotel-section-headings", async (req, res) => {
+  try {
+    const { hotel_section_id, headings } = req.body;
+
+    if (!hotel_section_id || !Array.isArray(headings)) {
+      return res
+        .status(400)
+        .json({ error: "hotel_section_id and headings array are required" });
+    }
+
+    const results = await updateHotelSectionHeadings({
+      hotel_section_id,
+      headings,
+    });
+
+    res.status(200).json({
+      message: "Heading(s) updated successfully",
+      updatedCount: results.length,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Failed to update heading(s)",
+      reason: error.message,
+    });
+  }
+});
+
+// -------------------- Update Section Descriptions API --------------------
+app.put("/api/hotel-section-descriptions", async (req, res) => {
+  try {
+    const { hotel_section_id, descriptions } = req.body;
+
+    if (!hotel_section_id || !Array.isArray(descriptions)) {
+      return res.status(400).json({
+        error: "hotel_section_id and descriptions array are required",
+      });
+    }
+
+    const results = await updateHotelSectionDescriptions({
+      hotel_section_id,
+      descriptions,
+    });
+
+    res.status(200).json({
+      message: "Description(s) updated successfully",
+      updatedCount: results.length,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to update description(s)",
+      reason: error.message,
+    });
+  }
+});
+
+// -------------------- Update Section Images API --------------------
+app.put("/api/hotel-section-images", async (req, res) => {
+  try {
+    const { hotel_section_id, images } = req.body;
+
+    if (!hotel_section_id || !Array.isArray(images)) {
+      return res
+        .status(400)
+        .json({ error: "hotel_section_id and images array are required" });
+    }
+
+    const results = await updateHotelSectionImages({
+      hotel_section_id,
+      images,
+    });
+
+    res.status(200).json({
+      message: "Image(s) updated successfully",
+      updatedCount: results.length,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to update image(s)",
       reason: error.message,
     });
   }
@@ -494,26 +577,27 @@ app.get("/api/templates/:templateId/sections", async (req, res) => {
 const query = (sql, params = []) =>
   new Promise((resolve, reject) => {
     connection.query(sql, params, (err, results) => {
-      if (err) reject(err)
-      else resolve(results)
-    })
-  })
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
 
 // ------------------------ HOTELS ------------------------
-const getHotels = () => query("SELECT * FROM Hotels")
-const getHotel = (id) => query("SELECT * FROM Hotels WHERE id = ?", [id])
-const createHotel = (data) => query("INSERT INTO Hotels SET ?", data)
+const getHotels = () => query("SELECT * FROM Hotels");
+const getHotel = (id) => query("SELECT * FROM Hotels WHERE id = ?", [id]);
+const createHotel = (data) => query("INSERT INTO Hotels SET ?", data);
 const updateHotel = (id, data) =>
-  query("UPDATE Hotels SET ? WHERE id = ?", [data, id])
-const deleteHotel = (id) => query("DELETE FROM Hotels WHERE id = ?", [id])
+  query("UPDATE Hotels SET ? WHERE id = ?", [data, id]);
+const deleteHotel = (id) => query("DELETE FROM Hotels WHERE id = ?", [id]);
 
 // ------------------------ TEMPLATES ------------------------
-const getTemplates = () => query("SELECT * FROM Templates")
-const getTemplate = (id) => query("SELECT * FROM Templates WHERE id = ?", [id])
+const getTemplates = () => query("SELECT * FROM Templates");
+const getTemplate = (id) => query("SELECT * FROM Templates WHERE id = ?", [id]);
 //const createTemplate = (data) => query("INSERT INTO Templates SET ?", data);
 const updateTemplate = (id, data) =>
-  query("UPDATE Templates SET ? WHERE id = ?", [data, id])
-const deleteTemplate = (id) => query("DELETE FROM Templates WHERE id = ?", [id])
+  query("UPDATE Templates SET ? WHERE id = ?", [data, id]);
+const deleteTemplate = (id) =>
+  query("DELETE FROM Templates WHERE id = ?", [id]);
 
 // ------------------------ PAGES & SECTIONS ------------------------
 const getPages = (hotelId) =>
@@ -555,8 +639,8 @@ JOIN Hotels AS h
   ON h.id = hp.hotel_id
 WHERE h.id = ?
 ORDER BY hs.id;`,
-    [hotelId],
-  )
+    [hotelId]
+  );
 
 // ------------------------ HEADINGS, DESCRIPTIONS, IMAGES, FOOTER ------------------------
 const getHeadings = (hotelId) =>
@@ -568,8 +652,8 @@ const getHeadings = (hotelId) =>
      JOIN Hotels h ON h.id = hp.hotel_id
      WHERE h.id = ?
      ORDER BY hs.id`,
-    [hotelId],
-  )
+    [hotelId]
+  );
 
 const getDescriptions = (hotelId) =>
   query(
@@ -580,8 +664,8 @@ const getDescriptions = (hotelId) =>
      JOIN Hotels h ON h.id = hp.hotel_id
      WHERE h.id = ?
      ORDER BY hs.id`,
-    [hotelId],
-  )
+    [hotelId]
+  );
 
 const getImages = (hotelId) =>
   query(
@@ -592,8 +676,8 @@ const getImages = (hotelId) =>
      JOIN Hotels h ON h.id = hp.hotel_id
      WHERE h.id = ?
      ORDER BY hs.id`,
-    [hotelId],
-  )
+    [hotelId]
+  );
 
 const getFooter = (hotelId) =>
   query(
@@ -602,24 +686,24 @@ const getFooter = (hotelId) =>
      JOIN TemplateSections ts ON ts.id = hs.template_section_id
      JOIN HotelTemplates ht ON ht.id = hs.hotel_template_id
      WHERE ht.hotel_id = ? AND ts.type =`,
-    [hotelId],
-  )
+    [hotelId]
+  );
 
 // ------------------------ HOTEL TEMPLATE ASSIGNMENT ------------------------
 const getHotelTemplates = (hotelId) =>
-  query("SELECT * FROM HotelTemplates WHERE hotel_id = ?", [hotelId])
+  query("SELECT * FROM HotelTemplates WHERE hotel_id = ?", [hotelId]);
 
 const assignTemplateToHotel = (hotelId, templateId) =>
   query("INSERT INTO HotelTemplates SET ?", {
     hotel_id: hotelId,
     template_id: templateId,
-  })
+  });
 
 const removeTemplateFromHotel = (hotelId, templateId) =>
   query("DELETE FROM HotelTemplates WHERE hotel_id = ? AND template_id = ?", [
     hotelId,
     templateId,
-  ])
+  ]);
 
 const getHotelPageDetails = async (hotelId, pageName) => {
   try {
@@ -645,13 +729,13 @@ const getHotelPageDetails = async (hotelId, pageName) => {
       WHERE h.id = ? AND tp.page_name = ? AND h.current_template_id = tp.template_id
       GROUP BY hs.id, ts.section_name, ts.type, tp.id, tp.page_name
       ORDER BY hs.id;
-    `
+    `;
 
     // ---------------- EXECUTE QUERY ----------------
-    const rows = await query(query_str, [hotelId, pageName])
-    if (!rows || rows.length === 0) return { error: "Page not found" }
+    const rows = await query(query_str, [hotelId, pageName]);
+    if (!rows || rows.length === 0) return { error: "Page not found" };
 
-    const templateId = rows[0].template_id
+    const templateId = rows[0].template_id;
 
     // ---------------- PROCESS SECTIONS ----------------
     const sections = rows.map((row) => {
@@ -662,7 +746,7 @@ const getHotelPageDetails = async (hotelId, pageName) => {
         headings: row.headings ? row.headings.split("||") : [],
         descriptions: row.descriptions ? row.descriptions.split("||") : [],
         images: row.images ? row.images.split("||") : [],
-      }
+      };
 
       // Footer special handling
       if (row.section_name.toLowerCase() === "footer") {
@@ -676,39 +760,39 @@ const getHotelPageDetails = async (hotelId, pageName) => {
             opening: row.opening_hours || "",
             closing: row.closing_hours || "",
           },
-        }
+        };
         secObj.links = {
           terms: row.terms_link || "",
           privacy: row.privacy_link || "",
           accessibility: row.accessibility_link || "",
-        }
+        };
       }
 
-      return secObj
-    })
+      return secObj;
+    });
 
     // ---------------- FINAL RESPONSE ----------------
     return {
       templateId: templateId.toString(),
       pageName,
       sections,
-    }
+    };
   } catch (err) {
-    console.error("Failed to fetch page details:", err)
-    return { error: "Failed to fetch page details", reason: err.message }
+    console.error("Failed to fetch page details:", err);
+    return { error: "Failed to fetch page details", reason: err.message };
   }
-}
+};
 
 // Create Template
 const createTemplate = (data) =>
-  query("INSERT INTO Templates (name) VALUES (?)", [data.name])
+  query("INSERT INTO Templates (name) VALUES (?)", [data.name]);
 
 // Create Template Page
 const createTemplatePage = (data) =>
   query("INSERT INTO TemplatePages (template_id, page_name) VALUES (?, ?)", [
     data.template_id,
     data.page_name,
-  ])
+  ]);
 
 // Create Template Section
 const createTemplateSection = (data) =>
@@ -728,12 +812,26 @@ const createHotelSection = (data) =>
     [data.hotel_page_id, data.template_section_id]
   );
 
-// Add Hotel Section Heading
-const addHotelSectionHeading = (data) =>
-  query(
+// -------------------- Add Multiple Hotel Section Headings --------------------
+const addHotelSectionHeadings = async (data) => {
+  // If heading_text is an array (even single item)
+  if (Array.isArray(data.heading_text)) {
+    const values = data.heading_text.map((text) => [
+      data.hotel_section_id,
+      text,
+    ]);
+    return query(
+      "INSERT INTO HotelSectionHeadings (hotel_section_id, heading_text) VALUES ?",
+      [values]
+    );
+  }
+
+  // Fallback for single string (not array)
+  return query(
     "INSERT INTO HotelSectionHeadings (hotel_section_id, heading_text) VALUES (?, ?)",
     [data.hotel_section_id, data.heading_text]
   );
+};
 
 // -------------------- Add Multiple Hotel Section Descriptions --------------------
 const addHotelSectionDescriptions = async (data) => {
@@ -778,6 +876,60 @@ const addHotelSectionImages = async (data) => {
   return query(queryStr, [values]);
 };
 
+// -------------------- Update Multiple Hotel Section Headings --------------------
+const updateHotelSectionHeadings = async (data) => {
+  const { hotel_section_id, headings } = data;
+
+  if (!hotel_section_id || !Array.isArray(headings)) {
+    throw new Error("hotel_section_id and headings array are required");
+  }
+
+  const updates = headings.map(({ id, heading_text }) =>
+    query(
+      "UPDATE HotelSectionHeadings SET heading_text = ? WHERE id = ? AND hotel_section_id = ?",
+      [heading_text, id, hotel_section_id]
+    )
+  );
+
+  return Promise.all(updates);
+};
+
+// -------------------- Update Multiple Hotel Section Descriptions --------------------
+const updateHotelSectionDescriptions = async (data) => {
+  const { hotel_section_id, descriptions } = data;
+
+  if (!hotel_section_id || !Array.isArray(descriptions)) {
+    throw new Error("hotel_section_id and descriptions array are required");
+  }
+
+  const updates = descriptions.map(({ id, description_text }) =>
+    query(
+      "UPDATE HotelSectionDescriptions SET description_text = ? WHERE id = ? AND hotel_section_id = ?",
+      [description_text, id, hotel_section_id]
+    )
+  );
+
+  return Promise.all(updates);
+};
+
+// -------------------- Update Multiple Hotel Section Images --------------------
+const updateHotelSectionImages = async (data) => {
+  const { hotel_section_id, images } = data;
+
+  if (!hotel_section_id || !Array.isArray(images)) {
+    throw new Error("hotel_section_id and images array are required");
+  }
+
+  const updates = images.map(({ id, image_url }) =>
+    query(
+      "UPDATE HotelSectionImages SET image_url = ? WHERE id = ? AND hotel_section_id = ?",
+      [image_url, id, hotel_section_id]
+    )
+  );
+
+  return Promise.all(updates);
+};
+
 // Get All Template Sections (with optional template_id filter)
 const getAllTemplateSections = async (template_id) => {
   let queryStr = `
@@ -805,4 +957,4 @@ const getAllTemplateSections = async (template_id) => {
 };
 
 // ------------------------ START SERVER ------------------------
-app.listen(port, () => console.log(`✅ Server running on port ${port}`))
+app.listen(port, () => console.log(`✅ Server running on port ${port}`));

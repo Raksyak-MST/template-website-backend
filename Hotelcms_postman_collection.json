@@ -113,9 +113,6 @@
       "name": "Get Sections",
       "request": { "method": "GET", "url": "http://localhost:3000/api/hotels/1/sections" }
     },
-
-   
-
     {
       "name": "Assign Template Section to Hotel Page",
       "request": {
@@ -164,28 +161,60 @@
         }
       }
     },
+
     {
-  "name": "Get All Template Sections",
-  "request": {
-    "method": "GET",
-    "url": {
-      "raw": "http://localhost:3000/api/template-sections?template_id=9",
-      "protocol": "http",
-      "host": ["localhost"],
-      "port": "3000",
-      "path": ["api", "template-sections"],
-      "query": [
-        { "key": "template_id", "value": "9" }
-      ]
+      "name": "Update Section Headings",
+      "request": {
+        "method": "PUT",
+        "url": "http://localhost:3000/api/hotel-section-headings",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_section_id\": 22,\n  \"headings\": [\n    { \"id\": 55, \"heading_text\": \"Updated heading one\" },\n    { \"id\": 56, \"heading_text\": \"Updated heading two\" }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Update Section Descriptions",
+      "request": {
+        "method": "PUT",
+        "url": "http://localhost:3000/api/hotel-section-descriptions",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_section_id\": 22,\n  \"descriptions\": [\n    { \"id\": 61, \"description_text\": \"Updated description A\" },\n    { \"id\": 62, \"description_text\": \"Updated description B\" }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Update Section Images",
+      "request": {
+        "method": "PUT",
+        "url": "http://localhost:3000/api/hotel-section-images",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_section_id\": 22,\n  \"images\": [\n    { \"id\": 33, \"image_url\": \"/hotel2/updated1.webp\" },\n    { \"id\": 34, \"image_url\": \"/hotel2/updated2.webp\" }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Get All Template Sections",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/template-sections?template_id=9",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "template-sections"],
+          "query": [{ "key": "template_id", "value": "9" }]
+        }
+      }
     }
-  }
+  ]
 }
 
-    
-    
-  ]
-  
-}
 
 
 
