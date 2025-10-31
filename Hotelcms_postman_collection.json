@@ -49,6 +49,39 @@
       "request": { "method": "GET", "url": "http://localhost:3000/api/templates/1" }
     },
     {
+      "name": "Create Template",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/templates",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Luxury Template\"\n}" }
+      }
+    },
+    {
+      "name": "Create Template Page",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/template-pages",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"template_id\": 1,\n  \"page_name\": \"home\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Template Section",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/template-sections",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"template_id\": 1,\n  \"section_name\": \"hero\",\n  \"type\": \"banner\"\n}"
+        }
+      }
+    },
+    {
       "name": "Assign Template to Hotel",
       "request": {
         "method": "POST",
@@ -80,59 +113,80 @@
       "name": "Get Sections",
       "request": { "method": "GET", "url": "http://localhost:3000/api/hotels/1/sections" }
     },
+
+   
+
     {
-      "name": "Get Headings",
-      "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/headings" }
-    },
-    {
-      "name": "Get Descriptions",
-      "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/descriptions" }
-    },
-    {
-      "name": "Get Images",
-      "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/images" }
-    },
-    {
-      "name": "Get Footer",
-      "request": { "method": "GET", "url": "http://localhost:3000/api/sections/1/footer" }
-    },
-    {
-      "name": "Create Template",
+      "name": "Assign Template Section to Hotel Page",
       "request": {
         "method": "POST",
-        "url": "http://localhost:3000/api/templates",
+        "url": "http://localhost:3000/api/hotel-sections",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Luxury Template\"\n}"
+          "raw": "{\n  \"hotel_page_id\": 10,\n  \"template_section_id\": 75\n}"
         }
       }
     },
     {
-      "name": "Create Template Page",
+      "name": "Add Section Heading",
       "request": {
         "method": "POST",
-        "url": "http://localhost:3000/api/template-pages",
+        "url": "http://localhost:3000/api/hotel-section-headings",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"template_id\": 1,\n  \"page_name\": \"home\"\n}"
+          "raw": "{\n  \"hotel_section_id\": 22,\n  \"heading_text\": \"Welcome to Royal Palace Hotel\"\n}"
         }
       }
     },
     {
-      "name": "Create Template Section",
+      "name": "Add Section Description",
       "request": {
         "method": "POST",
-        "url": "http://localhost:3000/api/template-sections",
+        "url": "http://localhost:3000/api/hotel-section-descriptions",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"template_id\": 1,\n  \"section_name\": \"hero\",\n  \"type\": \"banner\"\n}"
+          "raw": "{\n  \"hotel_section_id\": 22,\n  \"description_text\": \"Experience luxury and comfort in every corner.\"\n}"
         }
       }
+    },
+    {
+      "name": "Add Section Image",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/hotel-section-images",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_section_id\": 22,\n  \"image_url\": \"/hotel2/gallery1.webp\"\n}"
+        }
+      }
+    },
+    {
+  "name": "Get All Template Sections",
+  "request": {
+    "method": "GET",
+    "url": {
+      "raw": "http://localhost:3000/api/template-sections?template_id=9",
+      "protocol": "http",
+      "host": ["localhost"],
+      "port": "3000",
+      "path": ["api", "template-sections"],
+      "query": [
+        { "key": "template_id", "value": "9" }
+      ]
     }
-  ]
+  }
 }
+
+    
+    
+  ]
+  
+}
+
+
 
 
