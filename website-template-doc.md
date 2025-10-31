@@ -601,25 +601,27 @@ Blog Page:
 
 ## Miscellaneous
 
-1. hotel can change the theme (color) of the website
-1. hotel can change the contnet (headings, descriptions, images)
-1. hotel user can pick and mark template as Active to use it for live website (no need to update the headings and content if the template sections are same).
-1. option to select and change template
-1. two hotel can use the same template
-1. hotel will be provided with the Admin panel to make the changes
-1. hotel can switch to different template
-1. all the templates should be in one project of individual project for each template.
-1. make a default contents for all templates.
-   1. create common entry(headings, descriptions, images) for all the templates
-1. there should be a way to differenciate, which data(headings, descriptions, images) to show for same template choosen by hotel.
-1. deploy and map hotel domain with template.
-1. nginx configuration to map domain with the template path(template path should be hidden only the pages path can be visible)
-   1. `<domain>/template11/home` not allowed
-   1. `<domain>/home` allowed
-1. how to show the template for the hotel with they selected.
-1. When requesting hotel data from a template show loading indicator if not able to get the data show error message.
-1. if hotel is deleted all the resource from the hotel should be deleted.
-1. API to fill the HotelPages table data (this should be created on hotel template selection automatically).
-1. If all templates are served from single react application, application crash all templates will creash.
-1. When adding new hotel, all the entries for the hotel content (entries) should not be inserted manually.
-1. How does one hotel will select another template to use. Is their any authentication check they need to perform.
+## Miscellaneous
+
+1. Hotel can change the theme (color) of the website.  
+2. Hotel can change the content (headings, descriptions, images).  
+3. Hotel user can select and mark a template as *Active* to use it for the live website (no need to update headings and content if the template sections are the same).  
+4. Option to select and change the template.  
+5. Two hotels can use the same template.  
+6. Each hotel will be provided with an admin panel to make changes.  
+7. Hotel can switch to a different template.  
+8. All templates should be in one project or in individual projects for each template.  
+9. Create default content for all templates.  
+   1. Create common entries (headings, descriptions, images) for all templates.  
+10. There should be a way to differentiate which data (headings, descriptions, images) to show for the same template chosen by different hotels.  
+11. Deploy and map the hotel domain with its selected template.  
+12. Configure Nginx to map the domain with the template path (the template path should be hidden; only page paths should be visible).  
+    1. `<domain>/template11/home` → not allowed  
+    2. `<domain>/home` → allowed  
+13. Define how to display the selected template for each hotel.  
+14. When requesting hotel data from a template, show a loading indicator; if data cannot be fetched, show an error message.  
+15. If a hotel is deleted, all its related resources should also be deleted.  
+16. Provide an API to populate the `HotelPages` table (this should be created automatically upon hotel template selection).  
+17. If all templates are served from a single React application, a crash in the application will cause all templates to crash.  
+18. When adding a new hotel, all related content entries should not need to be inserted manually.  
+19. Define how one hotel can select another template for use. Is any authentication check required?
