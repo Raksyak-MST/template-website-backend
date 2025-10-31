@@ -617,3 +617,4 @@ Blog Page:
 1. API to fill the HotelPages table data (this should be created on hotel template selection automatically).
 1. If all templates are served from single react application, application crash all templates will creash.
 1. When adding new hotel, all the entries for the hotel content (entries) should not be inserted manually.
+1. How does one hotel will select another template to use. Is their any authentication check they need to perform.
